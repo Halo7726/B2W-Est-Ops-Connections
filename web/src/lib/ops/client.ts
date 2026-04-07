@@ -1,4 +1,5 @@
 import { getConfig } from "@/lib/config";
+import { extractOpsRows } from "@/lib/ops/validators";
 
 type QueryOptions = {
   filter?: string;
@@ -86,10 +87,7 @@ export async function fetchOpsPage<T extends Record<string, unknown>>(
   }
 
   const data = await response.json();
-
-  if (Array.isArray(data)) return data as T[];
-  if (Array.isArray(data.value)) return data.value as T[];
-  return [];
+  return extractOpsRows(data) as T[];
 }
 
 export async function fetchOpsAll<T extends Record<string, unknown>>(

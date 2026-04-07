@@ -36,6 +36,7 @@ export default function SimpleReportBuilder() {
 
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [autoSeeding, setAutoSeeding] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<RunResponse | null>(null);
@@ -43,13 +44,18 @@ export default function SimpleReportBuilder() {
   const canRun = Boolean(jobNumber && trackingId);
   const canExport = Boolean(result && result.rows.length > 0);
 
-  async function loadJobs() {
+  async function loadJobs(skipAutoSeed = false) {
     setLoadingOptions(true);
     setError(null);
     try {
       const res = await fetch("/api/simple-report/options", { cache: "no-store" });
       const data = (await res.json()) as { ok: boolean; jobs: Option[]; accounts: Option[]; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Failed to load jobs");
+      if (data.jobs.length === 0 && !skipAutoSeed) {
+        setLoadingOptions(false);
+        await autoSeedJobs();
+        return;
+      }
       setJobs(data.jobs);
       if (data.jobs.length > 0) {
         setJobNumber((prev) => prev || data.jobs[0].value);
@@ -58,6 +64,25 @@ export default function SimpleReportBuilder() {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setLoadingOptions(false);
+    }
+  }
+
+  async function autoSeedJobs() {
+    setAutoSeeding(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/ops/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entity: "Job", top: 5000 }),
+      });
+      const data = (await res.json()) as { ok: boolean; error?: string };
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Auto-sync of Job entity failed");
+      await loadJobs(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setAutoSeeding(false);
     }
   }
 
@@ -88,6 +113,16 @@ export default function SimpleReportBuilder() {
     setSyncing(true);
     setError(null);
     try {
+      // Refresh full job list (no jobNumber filter)
+      const jobRes = await fetch("/api/ops/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entity: "Job", top: 5000 }),
+      });
+      const jobData = (await jobRes.json()) as { ok: boolean; error?: string };
+      if (!jobRes.ok || !jobData.ok) throw new Error(jobData.error ?? "Sync failed for Job");
+
+      // Refresh production data for the selected job
       const entities = ["JobProductionTarget", "JobProductionAccount"];
       for (const entity of entities) {
         const res = await fetch("/api/ops/sync", {
@@ -98,6 +133,7 @@ export default function SimpleReportBuilder() {
         const data = (await res.json()) as { ok: boolean; error?: string };
         if (!res.ok || !data.ok) throw new Error(data.error ?? `Sync failed for ${entity}`);
       }
+      await loadJobs(true);
       await loadAccounts(jobNumber);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
@@ -182,7 +218,7 @@ export default function SimpleReportBuilder() {
               value={jobNumber}
               onChange={(e) => setJobNumber(e.target.value)}
               className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm"
-              disabled={loadingOptions}
+              disabled={loadingOptions || autoSeeding}
             >
               {jobs.length === 0 && <option value="">No jobs found in cache</option>}
               {jobs.map((job) => (
@@ -281,7 +317,6 @@ export default function SimpleReportBuilder() {
           </button>
           <a
             href={pdfUrl}
-            aria-disabled={!canExport}
             className={`rounded-md border px-3 py-2 text-sm ${
               canExport
                 ? "border-cyan-300 bg-cyan-50 text-cyan-900 hover:bg-cyan-100"
@@ -292,6 +327,11 @@ export default function SimpleReportBuilder() {
           </a>
         </div>
 
+        {autoSeeding && (
+          <p className="mt-3 rounded border border-cyan-200 bg-cyan-50 p-2 text-sm text-cyan-800">
+            No cached jobs found — pulling from OPS...
+          </p>
+        )}
         {error && <p className="mt-3 rounded border border-red-200 bg-red-50 p-2 text-sm text-red-700">{error}</p>}
       </section>
 

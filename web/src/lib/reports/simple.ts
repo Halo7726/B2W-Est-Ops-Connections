@@ -1,4 +1,11 @@
 import { getDb } from "@/lib/db/client";
+import {
+  normalizeBoolean,
+  normalizeDateString,
+  normalizeNumberStrict,
+  normalizeString,
+  parseCachedJsonStrict,
+} from "@/lib/reports/transform";
 
 export type DatePreset = "last7" | "last30" | "thisMonth" | "lastMonth" | "custom";
 
@@ -84,33 +91,63 @@ function resolveDateRange(input: SimpleReportRequest): { startDate: string; endD
   return { startDate: toIsoDate(start), endDate: toIsoDate(end) };
 }
 
-function toNumber(value: unknown): number {
-  if (typeof value === "number") return value;
-  if (typeof value === "string") {
-    const n = Number(value);
-    return Number.isFinite(n) ? n : 0;
-  }
-  return 0;
-}
-
 export async function getSimpleReportOptions(jobNumber?: string): Promise<SimpleReportOptions> {
   const db = await getDb();
 
-  const jobRows = await db.all<CacheRow>(
-    "SELECT data_json FROM ops_cache WHERE entity = ? ORDER BY fetched_at DESC LIMIT 30000",
-    ["JobProductionTarget"]
+  // Primary: build job list from the Job entity (active jobs only, with Title labels)
+  const jobEntityRows = await db.all<CacheRow>(
+    "SELECT data_json FROM ops_cache WHERE entity = ? ORDER BY fetched_at DESC LIMIT 10000",
+    ["Job"]
   );
 
-  const jobSet = new Set<string>();
-  for (const row of jobRows) {
-    const data = JSON.parse(row.data_json) as Record<string, unknown>;
-    const job = typeof data.JobNumber === "string" ? data.JobNumber.trim() : "";
-    if (job) jobSet.add(job);
+  type JobOption = { value: string; label: string };
+  const jobOptions: JobOption[] = [];
+  let skippedJobRows = 0;
+
+  for (const row of jobEntityRows) {
+    const data = parseCachedJsonStrict(row.data_json);
+    if (!data) {
+      skippedJobRows += 1;
+      continue;
+    }
+    const isActive = normalizeBoolean(data.IsActive);
+    if (isActive === false) continue;
+
+    const num = normalizeString(data.JobNumber);
+    if (!num) continue;
+
+    const title = normalizeString(data.Title);
+    const label = title ? `${num} - ${title}` : num;
+    jobOptions.push({ value: num, label });
   }
 
-  const jobs = Array.from(jobSet)
-    .sort((a, b) => a.localeCompare(b))
-    .map((j) => ({ value: j, label: j }));
+  if (skippedJobRows > 0) {
+    console.warn(`Simple report options skipped ${skippedJobRows} invalid cached Job rows`);
+  }
+
+  jobOptions.sort((a, b) => a.value.localeCompare(b.value));
+
+  // Fallback: if Job entity cache is empty, derive job list from JobProductionTarget (backward compat)
+  let jobs: JobOption[];
+  if (jobOptions.length > 0) {
+    jobs = jobOptions;
+  } else {
+    const jobRows = await db.all<CacheRow>(
+      "SELECT data_json FROM ops_cache WHERE entity = ? ORDER BY fetched_at DESC LIMIT 30000",
+      ["JobProductionTarget"]
+    );
+    const jobSet = new Set<string>();
+    for (const row of jobRows) {
+      const data = parseCachedJsonStrict(row.data_json);
+      if (!data) continue;
+
+      const job = normalizeString(data.JobNumber);
+      if (job) jobSet.add(job);
+    }
+    jobs = Array.from(jobSet)
+      .sort((a, b) => a.localeCompare(b))
+      .map((j) => ({ value: j, label: j }));
+  }
 
   const accountRows = await db.all<CacheRow>(
     "SELECT data_json FROM ops_cache WHERE entity = ? ORDER BY fetched_at DESC LIMIT 30000",
@@ -120,15 +157,17 @@ export async function getSimpleReportOptions(jobNumber?: string): Promise<Simple
   const accountMap = new Map<string, string>();
 
   for (const row of accountRows) {
-    const data = JSON.parse(row.data_json) as Record<string, unknown>;
-    const rowJob = typeof data.JobNumber === "string" ? data.JobNumber.trim() : "";
+    const data = parseCachedJsonStrict(row.data_json);
+    if (!data) continue;
+
+    const rowJob = normalizeString(data.JobNumber);
     if (jobNumber && rowJob !== jobNumber) continue;
 
-    const trackingId = typeof data.TrackingID === "string" ? data.TrackingID.trim() : "";
+    const trackingId = normalizeString(data.TrackingID);
     if (!trackingId) continue;
 
-    const desc = typeof data.Description === "string" ? data.Description.trim() : "";
-    const uom = typeof data.UnitOfMeasure === "string" ? data.UnitOfMeasure.trim() : "";
+    const desc = normalizeString(data.Description);
+    const uom = normalizeString(data.UnitOfMeasure);
     const label = [trackingId, desc, uom ? `(${uom})` : ""].filter(Boolean).join(" - ");
 
     if (!accountMap.has(trackingId)) {
@@ -137,11 +176,19 @@ export async function getSimpleReportOptions(jobNumber?: string): Promise<Simple
   }
 
   if (accountMap.size === 0) {
-    for (const row of jobRows) {
-      const data = JSON.parse(row.data_json) as Record<string, unknown>;
-      const rowJob = typeof data.JobNumber === "string" ? data.JobNumber.trim() : "";
+    const targetRows = await db.all<CacheRow>(
+      "SELECT data_json FROM ops_cache WHERE entity = ? ORDER BY fetched_at DESC LIMIT 30000",
+      ["JobProductionTarget"]
+    );
+
+    for (const row of targetRows) {
+      const data = parseCachedJsonStrict(row.data_json);
+      if (!data) continue;
+
+      const rowJob = normalizeString(data.JobNumber);
       if (jobNumber && rowJob !== jobNumber) continue;
-      const trackingId = typeof data.TrackingID === "string" ? data.TrackingID.trim() : "";
+
+      const trackingId = normalizeString(data.TrackingID);
       if (trackingId && !accountMap.has(trackingId)) {
         accountMap.set(trackingId, trackingId);
       }
@@ -164,20 +211,38 @@ export async function runSimpleReport(input: SimpleReportRequest): Promise<Simpl
   );
 
   const daily = new Map<string, number>();
+  let skippedRows = 0;
 
   for (const row of rows) {
-    const data = JSON.parse(row.data_json) as Record<string, unknown>;
-    const job = typeof data.JobNumber === "string" ? data.JobNumber.trim() : "";
-    const trackingId = typeof data.TrackingID === "string" ? data.TrackingID.trim() : "";
-    const targetDate = typeof data.TargetDate === "string" ? data.TargetDate.slice(0, 10) : "";
+    const data = parseCachedJsonStrict(row.data_json);
+    if (!data) {
+      skippedRows += 1;
+      continue;
+    }
 
-    if (!job || !trackingId || !targetDate) continue;
+    const job = normalizeString(data.JobNumber);
+    const trackingId = normalizeString(data.TrackingID);
+    const targetDate = normalizeDateString(data.TargetDate);
+
+    if (!job || !trackingId || !targetDate) {
+      skippedRows += 1;
+      continue;
+    }
     if (job !== input.jobNumber) continue;
     if (trackingId !== input.trackingId) continue;
     if (targetDate < range.startDate || targetDate > range.endDate) continue;
 
-    const qty = toNumber(data.TargetQuantity);
+    const qty = normalizeNumberStrict(data.TargetQuantity);
+    if (qty === null) {
+      skippedRows += 1;
+      continue;
+    }
+
     daily.set(targetDate, (daily.get(targetDate) ?? 0) + qty);
+  }
+
+  if (skippedRows > 0) {
+    console.warn(`Simple report run skipped ${skippedRows} invalid cached JobProductionTarget rows`);
   }
 
   const resultRows: SimpleReportRow[] = Array.from(daily.entries())

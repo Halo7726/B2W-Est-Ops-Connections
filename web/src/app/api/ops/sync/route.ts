@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { fetchOpsAll } from "@/lib/ops/client";
 import { getDb } from "@/lib/db/client";
+import { normalizeString } from "@/lib/reports/transform";
 
 export const runtime = "nodejs";
 
@@ -32,17 +33,30 @@ export async function POST(request: NextRequest) {
     });
 
     let upserts = 0;
+    let skippedMissingObjectId = 0;
+    let skippedSerialization = 0;
 
     for (const row of rows) {
-      const objectId = String(row.ObjectID ?? row.objectId ?? row.id ?? "").trim();
-      if (!objectId) continue;
+      const objectId = normalizeString(row.ObjectID ?? row.objectId ?? row.id);
+      if (!objectId) {
+        skippedMissingObjectId += 1;
+        continue;
+      }
 
       const jobNumber =
         typeof row.JobNumber === "string"
-          ? row.JobNumber
+          ? row.JobNumber.trim()
           : typeof row.JobID === "string"
-            ? row.JobID
+            ? row.JobID.trim()
             : null;
+
+      let serializedRow: string;
+      try {
+        serializedRow = JSON.stringify(row);
+      } catch {
+        skippedSerialization += 1;
+        continue;
+      }
 
       await db.run(
         `
@@ -54,7 +68,7 @@ export async function POST(request: NextRequest) {
           data_json = excluded.data_json,
           fetched_at = CURRENT_TIMESTAMP
         `,
-        [parsed.entity, objectId, jobNumber, JSON.stringify(row)]
+        [parsed.entity, objectId, jobNumber, serializedRow]
       );
 
       upserts += 1;
@@ -77,6 +91,8 @@ export async function POST(request: NextRequest) {
       entity: parsed.entity,
       rowsFetched: rows.length,
       rowsUpserted: upserts,
+      rowsSkippedMissingObjectId: skippedMissingObjectId,
+      rowsSkippedSerialization: skippedSerialization,
       jobNumber: parsed.jobNumber ?? null,
       syncedAt: new Date().toISOString(),
     });

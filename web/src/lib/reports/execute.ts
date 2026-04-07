@@ -6,6 +6,7 @@ import {
   applySorts,
   selectColumns,
 } from "@/lib/reports/engine";
+import { parseCachedJsonStrict } from "@/lib/reports/transform";
 import type { ReportDefinition } from "@/lib/reports/api-types";
 import type {
   ReportColumn,
@@ -67,7 +68,9 @@ export async function executeReportDefinition(
     [report.entity, Number.isFinite(limit) ? limit : 1000]
   );
 
-  const rawRows = cacheRows.map((r) => JSON.parse(r.data_json) as Record<string, unknown>);
+  const rawRows = cacheRows
+    .map((r) => parseCachedJsonStrict(r.data_json))
+    .filter((row): row is Record<string, unknown> => row !== null);
   const filters = report.filters as ReportFilter[];
   const sorts = report.sorts as ReportSort[];
   const columns = report.columns as ReportColumn[];

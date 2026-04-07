@@ -37,6 +37,17 @@ export function getConfig(): AppConfig {
     throw new Error("LIBSQL_URL is required when DB_MODE=remote");
   }
 
+  let opsUrl: URL;
+  try {
+    opsUrl = new URL(parsed.OPS_BASE_URL);
+  } catch {
+    throw new Error("OPS_BASE_URL must be a valid URL");
+  }
+
+  if (!opsUrl.pathname.toLowerCase().includes("opsapi")) {
+    throw new Error("OPS_BASE_URL must point to an OPSAPI endpoint path");
+  }
+
   return {
     db: {
       mode: parsed.DB_MODE,

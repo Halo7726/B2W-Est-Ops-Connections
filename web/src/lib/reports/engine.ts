@@ -4,6 +4,11 @@ import {
   type ReportGrouping,
   type ReportSort,
 } from "@/lib/reports/types";
+import {
+  normalizeDateString,
+  normalizeNumberStrict,
+  normalizeString,
+} from "@/lib/reports/transform";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -26,6 +31,47 @@ function comparePrimitive(left: unknown, right: unknown): number {
   return String(left).localeCompare(String(right));
 }
 
+function compareStrict(left: unknown, right: unknown): number | null {
+  if (left === right) return 0;
+  if (left == null || right == null) return null;
+
+  const leftNum = normalizeNumberStrict(left);
+  const rightNum = normalizeNumberStrict(right);
+  if (leftNum !== null && rightNum !== null) {
+    return leftNum - rightNum;
+  }
+
+  const leftDate = normalizeDateString(left);
+  const rightDate = normalizeDateString(right);
+  if (leftDate && rightDate) {
+    return leftDate.localeCompare(rightDate);
+  }
+
+  if (typeof left === "string" && typeof right === "string") {
+    return left.localeCompare(right);
+  }
+
+  return null;
+}
+
+function compareOrdered(left: unknown, right: unknown): number | null {
+  if (left == null || right == null) return null;
+
+  const leftNum = normalizeNumberStrict(left);
+  const rightNum = normalizeNumberStrict(right);
+  if (leftNum !== null && rightNum !== null) {
+    return leftNum - rightNum;
+  }
+
+  const leftDate = normalizeDateString(left);
+  const rightDate = normalizeDateString(right);
+  if (leftDate && rightDate) {
+    return leftDate.localeCompare(rightDate);
+  }
+
+  return null;
+}
+
 function matchFilter(row: JsonRecord, filter: ReportFilter): boolean {
   const value = readValue(row, filter.field);
 
@@ -34,21 +80,33 @@ function matchFilter(row: JsonRecord, filter: ReportFilter): boolean {
       return value === filter.value;
     case "ne":
       return value !== filter.value;
-    case "gt":
-      return comparePrimitive(value, filter.value) > 0;
-    case "lt":
-      return comparePrimitive(value, filter.value) < 0;
-    case "ge":
-      return comparePrimitive(value, filter.value) >= 0;
-    case "le":
-      return comparePrimitive(value, filter.value) <= 0;
+    case "gt": {
+      const cmp = compareOrdered(value, filter.value);
+      return cmp !== null && cmp > 0;
+    }
+    case "lt": {
+      const cmp = compareOrdered(value, filter.value);
+      return cmp !== null && cmp < 0;
+    }
+    case "ge": {
+      const cmp = compareOrdered(value, filter.value);
+      return cmp !== null && cmp >= 0;
+    }
+    case "le": {
+      const cmp = compareOrdered(value, filter.value);
+      return cmp !== null && cmp <= 0;
+    }
     case "contains":
-      return String(value ?? "").toLowerCase().includes(String(filter.value).toLowerCase());
+      return normalizeString(value).toLowerCase().includes(normalizeString(filter.value).toLowerCase());
     case "startswith":
-      return String(value ?? "").toLowerCase().startsWith(String(filter.value).toLowerCase());
+      return normalizeString(value).toLowerCase().startsWith(normalizeString(filter.value).toLowerCase());
     case "in": {
       if (!Array.isArray(filter.value)) return false;
-      return filter.value.some((candidate: string | number) => candidate === value);
+      return filter.value.some((candidate: string | number) => {
+        if (candidate === value) return true;
+        const cmp = compareStrict(value, candidate);
+        return cmp === 0;
+      });
     }
     default:
       return false;
@@ -129,8 +187,11 @@ export function applyGroupings(rows: JsonRecord[], groupings: ReportGrouping[]):
       if (grouping.aggregate === "count") {
         map.set(key, current + 1);
       } else {
-        const numericValue = Number(readValue(row, grouping.aggregateField ?? grouping.field) ?? 0);
-        map.set(key, current + (Number.isFinite(numericValue) ? numericValue : 0));
+        const numericValue = normalizeNumberStrict(readValue(row, grouping.aggregateField ?? grouping.field));
+        if (numericValue === null) {
+          continue;
+        }
+        map.set(key, current + numericValue);
       }
     }
 
