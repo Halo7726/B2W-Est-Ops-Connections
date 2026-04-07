@@ -205,9 +205,16 @@ export async function getSimpleReportOptions(jobNumber?: string): Promise<Simple
 export async function runSimpleReport(input: SimpleReportRequest): Promise<SimpleReportResult> {
   const range = resolveDateRange(input);
   const db = await getDb();
+
+  // Query by job_number for efficiency; also include rows stored with a null job_number
+  // (cached before the job_number column was populated) so old data still works.
   const rows = await db.all<CacheRow>(
-    "SELECT data_json FROM ops_cache WHERE entity = ? ORDER BY fetched_at DESC LIMIT 50000",
-    ["JobProductionTarget"]
+    `SELECT data_json FROM ops_cache
+     WHERE entity = ?
+       AND (job_number = ? OR job_number IS NULL OR job_number = '')
+     ORDER BY fetched_at DESC
+     LIMIT 10000`,
+    ["JobProductionTarget", input.jobNumber]
   );
 
   const daily = new Map<string, number>();

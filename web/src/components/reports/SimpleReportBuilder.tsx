@@ -86,7 +86,7 @@ export default function SimpleReportBuilder() {
     }
   }
 
-  async function loadAccounts(job: string) {
+  async function loadAccounts(job: string, skipAutoSeed = false) {
     if (!job) return;
     setLoadingOptions(true);
     setError(null);
@@ -96,6 +96,13 @@ export default function SimpleReportBuilder() {
       });
       const data = (await res.json()) as { ok: boolean; accounts: Option[]; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Failed to load accounts");
+
+      if (data.accounts.length === 0 && !skipAutoSeed) {
+        setLoadingOptions(false);
+        await autoSeedAccounts(job);
+        return;
+      }
+
       setAccounts(data.accounts);
       setTrackingId((prev) => {
         if (data.accounts.some((a) => a.value === prev)) return prev;
@@ -105,6 +112,28 @@ export default function SimpleReportBuilder() {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setLoadingOptions(false);
+    }
+  }
+
+  async function autoSeedAccounts(job: string) {
+    setAutoSeeding(true);
+    setError(null);
+    try {
+      // Fetch both the accounts definition AND the production history so the report has data
+      for (const entity of ["JobProductionAccount", "JobProductionTarget"] as const) {
+        const res = await fetch("/api/ops/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ entity, jobNumber: job, top: 2000 }),
+        });
+        const data = (await res.json()) as { ok: boolean; error?: string };
+        if (!res.ok || !data.ok) throw new Error(data.error ?? `Auto-sync of ${entity} failed`);
+      }
+      await loadAccounts(job, true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setAutoSeeding(false);
     }
   }
 
@@ -235,7 +264,7 @@ export default function SimpleReportBuilder() {
               value={trackingId}
               onChange={(e) => setTrackingId(e.target.value)}
               className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm"
-              disabled={!jobNumber || loadingOptions}
+              disabled={!jobNumber || loadingOptions || autoSeeding}
             >
               {accounts.length === 0 && <option value="">No accounts found for this job</option>}
               {accounts.map((account) => (
@@ -329,7 +358,9 @@ export default function SimpleReportBuilder() {
 
         {autoSeeding && (
           <p className="mt-3 rounded border border-cyan-200 bg-cyan-50 p-2 text-sm text-cyan-800">
-            No cached jobs found — pulling from OPS...
+            {jobNumber
+              ? `No tracking accounts cached for job ${jobNumber} — fetching from OPS...`
+              : "No cached jobs found — pulling from OPS..."}
           </p>
         )}
         {error && <p className="mt-3 rounded border border-red-200 bg-red-50 p-2 text-sm text-red-700">{error}</p>}
