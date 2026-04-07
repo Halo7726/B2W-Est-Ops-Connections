@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 const requestSchema = z.object({
   jobNumber: z.string().min(1),
   trackingId: z.string().min(1),
-  preset: z.enum(["last7", "last30", "thisMonth", "lastMonth", "custom"]),
+  preset: z.enum(["all", "last7", "last30", "thisMonth", "lastMonth", "custom"]),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
 });

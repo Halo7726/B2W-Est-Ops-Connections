@@ -7,7 +7,7 @@ import {
   parseCachedJsonStrict,
 } from "@/lib/reports/transform";
 
-export type DatePreset = "last7" | "last30" | "thisMonth" | "lastMonth" | "custom";
+export type DatePreset = "all" | "last7" | "last30" | "thisMonth" | "lastMonth" | "custom";
 
 export interface SimpleReportRequest {
   jobNumber: string;
@@ -22,6 +22,22 @@ export interface SimpleReportRow {
   targetQuantity: number;
   trackingId: string;
   jobNumber: string;
+  crewId: string;
+  crewForemanEmployeeId: string;
+  crewSize: number | null;
+  duration: number | null;
+  notes: string;
+  jobSiteDescription: string;
+  productionMethod: string;
+}
+
+export interface AccountInfo {
+  trackingId: string;
+  description: string;
+  unitOfMeasure: string;
+  originalEstimatedQuantity: number | null;
+  projectedTotalQuantity: number | null;
+  jobNumber: string;
 }
 
 export interface SimpleReportResult {
@@ -30,6 +46,7 @@ export interface SimpleReportResult {
   dayCount: number;
   startDate: string;
   endDate: string;
+  accountInfo: AccountInfo | null;
 }
 
 type CacheRow = {
@@ -54,6 +71,10 @@ function toIsoDate(d: Date): string {
 }
 
 function resolveDateRange(input: SimpleReportRequest): { startDate: string; endDate: string } {
+  if (input.preset === "all") {
+    return { startDate: "1000-01-01", endDate: "2099-12-31" };
+  }
+
   const now = new Date();
   const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 
@@ -217,7 +238,19 @@ export async function runSimpleReport(input: SimpleReportRequest): Promise<Simpl
     ["JobProductionTarget", input.jobNumber]
   );
 
-  const daily = new Map<string, number>();
+  type TargetEntry = {
+    date: string;
+    targetQuantity: number;
+    crewId: string;
+    crewForemanEmployeeId: string;
+    crewSize: number | null;
+    duration: number | null;
+    notes: string;
+    jobSiteDescription: string;
+    productionMethod: string;
+  };
+
+  const daily = new Map<string, TargetEntry>();
   let skippedRows = 0;
 
   for (const row of rows) {
@@ -245,23 +278,69 @@ export async function runSimpleReport(input: SimpleReportRequest): Promise<Simpl
       continue;
     }
 
-    daily.set(targetDate, (daily.get(targetDate) ?? 0) + qty);
+    const existing = daily.get(targetDate);
+    if (existing) {
+      existing.targetQuantity += qty;
+    } else {
+      daily.set(targetDate, {
+        date: targetDate,
+        targetQuantity: qty,
+        crewId: normalizeString(data.CrewID),
+        crewForemanEmployeeId: normalizeString(data.CrewForemanEmployeeID),
+        crewSize: normalizeNumberStrict(data.CrewSize),
+        duration: normalizeNumberStrict(data.Duration),
+        notes: normalizeString(data.Notes),
+        jobSiteDescription: normalizeString(data.JobSiteDescription),
+        productionMethod: normalizeString(data.ProductionMethod),
+      });
+    }
   }
 
   if (skippedRows > 0) {
     console.warn(`Simple report run skipped ${skippedRows} invalid cached JobProductionTarget rows`);
   }
 
-  const resultRows: SimpleReportRow[] = Array.from(daily.entries())
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([date, targetQuantity]) => ({
-      date,
-      targetQuantity,
+  const resultRows: SimpleReportRow[] = Array.from(daily.values())
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((entry) => ({
+      ...entry,
       trackingId: input.trackingId,
       jobNumber: input.jobNumber,
     }));
 
   const totalQuantity = resultRows.reduce((sum, r) => sum + r.targetQuantity, 0);
+
+  // Fetch account info from JobProductionAccount cache
+  let accountInfo: AccountInfo | null = null;
+  const accountRows = await db.all<CacheRow>(
+    `SELECT data_json FROM ops_cache
+     WHERE entity = ?
+       AND (job_number = ? OR job_number IS NULL OR job_number = '')
+     ORDER BY fetched_at DESC
+     LIMIT 500`,
+    ["JobProductionAccount", input.jobNumber]
+  );
+
+  for (const row of accountRows) {
+    const data = parseCachedJsonStrict(row.data_json);
+    if (!data) continue;
+
+    const rowJob = normalizeString(data.JobNumber);
+    const rowTracking = normalizeString(data.TrackingID);
+
+    if (rowJob !== input.jobNumber) continue;
+    if (rowTracking !== input.trackingId) continue;
+
+    accountInfo = {
+      trackingId: rowTracking,
+      description: normalizeString(data.Description),
+      unitOfMeasure: normalizeString(data.UnitOfMeasure),
+      originalEstimatedQuantity: normalizeNumberStrict(data.OriginalEstimatedQuantity),
+      projectedTotalQuantity: normalizeNumberStrict(data.ProjectedTotalQuantity),
+      jobNumber: rowJob,
+    };
+    break;
+  }
 
   return {
     rows: resultRows,
@@ -269,5 +348,6 @@ export async function runSimpleReport(input: SimpleReportRequest): Promise<Simpl
     dayCount: resultRows.length,
     startDate: range.startDate,
     endDate: range.endDate,
+    accountInfo,
   };
 }

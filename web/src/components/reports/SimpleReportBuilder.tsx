@@ -1,22 +1,47 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-type DatePreset = "last7" | "last30" | "thisMonth" | "lastMonth" | "custom";
+type DatePreset = "all" | "last7" | "last30" | "thisMonth" | "lastMonth" | "custom";
 
 type Option = { value: string; label: string };
 
+type AccountInfo = {
+  trackingId: string;
+  description: string;
+  unitOfMeasure: string;
+  originalEstimatedQuantity: number | null;
+  projectedTotalQuantity: number | null;
+  jobNumber: string;
+};
+
+type ReportRow = {
+  date: string;
+  targetQuantity: number;
+  trackingId: string;
+  jobNumber: string;
+  crewId: string;
+  crewForemanEmployeeId: string;
+  crewSize: number | null;
+  duration: number | null;
+  notes: string;
+  jobSiteDescription: string;
+  productionMethod: string;
+};
+
 type RunResponse = {
   ok: boolean;
-  rows: { date: string; targetQuantity: number; trackingId: string; jobNumber: string }[];
+  rows: ReportRow[];
   totalQuantity: number;
   dayCount: number;
   startDate: string;
   endDate: string;
+  accountInfo: AccountInfo | null;
   error?: string;
 };
 
 function presetLabel(preset: DatePreset): string {
+  if (preset === "all") return "All Time";
   if (preset === "last7") return "Last 7 days";
   if (preset === "last30") return "Last 30 days";
   if (preset === "thisMonth") return "This month";
@@ -30,7 +55,7 @@ export default function SimpleReportBuilder() {
 
   const [jobNumber, setJobNumber] = useState("");
   const [trackingId, setTrackingId] = useState("");
-  const [preset, setPreset] = useState<DatePreset>("last30");
+  const [preset, setPreset] = useState<DatePreset>("all");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -40,6 +65,9 @@ export default function SimpleReportBuilder() {
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<RunResponse | null>(null);
+
+  // Track the latest run request to discard stale responses when selections change quickly
+  const runSeqRef = useRef(0);
 
   const canRun = Boolean(jobNumber && trackingId);
   const canExport = Boolean(result && result.rows.length > 0);
@@ -171,47 +199,66 @@ export default function SimpleReportBuilder() {
     }
   }
 
-  async function runReport() {
-    if (!jobNumber || !trackingId) {
-      setError("Please select both a job and account.");
-      return;
-    }
+  const runReport = useCallback(
+    async () => {
+      if (!jobNumber || !trackingId) return;
 
-    setRunning(true);
-    setError(null);
+      const seq = ++runSeqRef.current;
+      setRunning(true);
+      setError(null);
 
-    try {
-      const res = await fetch("/api/simple-report/run", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jobNumber,
-          trackingId,
-          preset,
-          startDate: preset === "custom" ? startDate : undefined,
-          endDate: preset === "custom" ? endDate : undefined,
-        }),
-      });
+      try {
+        const res = await fetch("/api/simple-report/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jobNumber,
+            trackingId,
+            preset,
+            startDate: preset === "custom" ? startDate : undefined,
+            endDate: preset === "custom" ? endDate : undefined,
+          }),
+        });
 
-      const data = (await res.json()) as RunResponse;
-      if (!res.ok || !data.ok) throw new Error(data.error ?? "Failed to run report");
-      setResult(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setRunning(false);
-    }
-  }
+        const data = (await res.json()) as RunResponse;
+        if (seq !== runSeqRef.current) return; // stale response — a newer run started
+        if (!res.ok || !data.ok) throw new Error(data.error ?? "Failed to run report");
+        setResult(data);
+      } catch (err) {
+        if (seq === runSeqRef.current) {
+          setError(err instanceof Error ? err.message : "Unknown error");
+        }
+      } finally {
+        if (seq === runSeqRef.current) {
+          setRunning(false);
+        }
+      }
+    },
+    [jobNumber, trackingId, preset, startDate, endDate]
+  );
 
   useEffect(() => {
     void loadJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one-time mount only
   }, []);
 
   useEffect(() => {
     if (jobNumber) {
       void loadAccounts(jobNumber);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loadAccounts is stable within job scope
   }, [jobNumber]);
+
+  // Auto-run the report whenever the tracking account or date range changes.
+  // runReport is excluded from deps intentionally: it is recreated whenever
+  // trackingId/preset/startDate/endDate change (the same values listed here),
+  // so including it would cause duplicate runs on each change.
+  useEffect(() => {
+    if (jobNumber && trackingId) {
+      void runReport();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runReport recreates whenever these same deps change
+  }, [trackingId, preset, startDate, endDate]);
 
   const pdfUrl = useMemo(() => {
     if (!jobNumber || !trackingId) return "#";
@@ -227,13 +274,21 @@ export default function SimpleReportBuilder() {
     return `/api/simple-report/pdf?${params.toString()}`;
   }, [jobNumber, trackingId, preset, startDate, endDate]);
 
+  const acct = result?.accountInfo;
+  const rangeDisplay =
+    preset === "all"
+      ? "All Time"
+      : result
+        ? `${result.startDate} to ${result.endDate}`
+        : "-";
+
   return (
     <div className="space-y-6">
       <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Report Setup</h2>
-            <p className="mt-1 text-sm text-slate-600">Pick a job, account, and date range. No advanced setup required.</p>
+            <p className="mt-1 text-sm text-slate-600">Pick a job, account, and date range. Report renders automatically.</p>
           </div>
           <span className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold text-cyan-800">
             Guided Workflow
@@ -259,7 +314,7 @@ export default function SimpleReportBuilder() {
           </label>
 
           <label className="space-y-1">
-            <span className="text-sm font-medium text-slate-700">Account to Track</span>
+            <span className="text-sm font-medium text-slate-700">Tracking Account</span>
             <select
               value={trackingId}
               onChange={(e) => setTrackingId(e.target.value)}
@@ -282,6 +337,7 @@ export default function SimpleReportBuilder() {
               onChange={(e) => setPreset(e.target.value as DatePreset)}
               className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm"
             >
+              <option value="all">All Time</option>
               <option value="last7">Last 7 days</option>
               <option value="last30">Last 30 days</option>
               <option value="thisMonth">This month</option>
@@ -338,7 +394,7 @@ export default function SimpleReportBuilder() {
             {syncing ? "Syncing..." : "Refresh from OPS"}
           </button>
           <button
-            onClick={runReport}
+            onClick={() => void runReport()}
             disabled={running || !canRun}
             className="rounded-md bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-700 disabled:opacity-60"
           >
@@ -366,10 +422,43 @@ export default function SimpleReportBuilder() {
         {error && <p className="mt-3 rounded border border-red-200 bg-red-50 p-2 text-sm text-red-700">{error}</p>}
       </section>
 
+      {/* Account Details Card */}
+      {acct && (
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900">Account Details</h2>
+          <p className="mt-1 text-sm text-slate-500">Tracking ID: {acct.trackingId}</p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+            <article className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs uppercase tracking-wide text-slate-500">Description</p>
+              <p className="mt-1 text-sm font-medium text-slate-900">{acct.description || "—"}</p>
+            </article>
+            <article className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs uppercase tracking-wide text-slate-500">Unit of Measure</p>
+              <p className="mt-1 text-sm font-medium text-slate-900">{acct.unitOfMeasure || "—"}</p>
+            </article>
+            <article className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs uppercase tracking-wide text-slate-500">Original Est. Qty</p>
+              <p className="mt-1 text-sm font-medium text-slate-900">
+                {acct.originalEstimatedQuantity !== null ? acct.originalEstimatedQuantity.toFixed(2) : "—"}
+              </p>
+            </article>
+            <article className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs uppercase tracking-wide text-slate-500">Projected Total Qty</p>
+              <p className="mt-1 text-sm font-medium text-slate-900">
+                {acct.projectedTotalQuantity !== null ? acct.projectedTotalQuantity.toFixed(2) : "—"}
+              </p>
+            </article>
+          </div>
+        </section>
+      )}
+
       <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Results</h2>
+        <h2 className="text-lg font-semibold text-slate-900">
+          Production History
+          {running && <span className="ml-2 text-sm font-normal text-slate-500">Loading…</span>}
+        </h2>
         <p className="mt-1 text-sm text-slate-600">
-          Range: {result?.startDate ?? "-"} to {result?.endDate ?? "-"} | Preset: {presetLabel(preset)}
+          Range: {rangeDisplay} | Preset: {presetLabel(preset)}
         </p>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <article className="rounded-lg border border-slate-200 bg-slate-50 p-3">
@@ -392,21 +481,37 @@ export default function SimpleReportBuilder() {
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr className="bg-slate-50 text-left text-slate-600">
-                <th className="border-b border-slate-200 px-3 py-2 font-medium">Date</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium">Target Quantity</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Date</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Target Qty</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Crew ID</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Foreman ID</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Crew Size</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Duration (hrs)</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Site</th>
+                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Notes</th>
               </tr>
             </thead>
             <tbody>
-              {(result?.rows ?? []).map((row) => (
-                <tr key={row.date} className="odd:bg-white even:bg-slate-50/50">
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.date}</td>
+              {(result?.rows ?? []).map((row, idx) => (
+                <tr key={idx} className="odd:bg-white even:bg-slate-50/50">
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700 whitespace-nowrap">{row.date}</td>
                   <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.targetQuantity.toFixed(2)}</td>
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.crewId || "—"}</td>
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.crewForemanEmployeeId || "—"}</td>
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.crewSize ?? "—"}</td>
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">
+                    {row.duration != null ? row.duration.toFixed(1) : "—"}
+                  </td>
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.jobSiteDescription || "—"}</td>
+                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700 max-w-xs truncate" title={row.notes}>
+                    {row.notes || "—"}
+                  </td>
                 </tr>
               ))}
               {(result?.rows.length ?? 0) === 0 && (
                 <tr>
-                  <td colSpan={2} className="px-3 py-6 text-center text-slate-500">
-                    No data yet. Select filters and run report.
+                  <td colSpan={8} className="px-3 py-6 text-center text-slate-500">
+                    {running ? "Loading..." : "No data yet. Select a tracking account above."}
                   </td>
                 </tr>
               )}
@@ -417,3 +522,4 @@ export default function SimpleReportBuilder() {
     </div>
   );
 }
+
