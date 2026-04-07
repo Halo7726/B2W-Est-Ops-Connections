@@ -1,0 +1,51 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Vendor"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"nNoVOKyMZEmqor602tILKg==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"3815da9c-8cac-4964-aaa2-beb4dad20b2a\", //ACME Crushed
+    Stone\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Category\": \"Southeast\",\r
+
+    \    \"Address1\": \"1222 Maple Ave\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Notes\": \"Sells parts\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"IsOwned\": false,\r
+
+    \    \"DistributionMethod\": {\r
+
+    \        \"Fax\": false,\r
+
+    \        \"Print\": true,\r
+
+    \        \"Email\": true\r
+
+    \    },\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 6000

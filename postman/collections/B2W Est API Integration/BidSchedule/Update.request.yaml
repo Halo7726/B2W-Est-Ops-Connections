@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{BaseURL}}/BidSchedule"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: " {\r
+
+    \    \"AntiTamperToken\": \"NVik6AvjWkymIlmGUuR28Q==_QkxU_IECsS/eF1gg=\",\r
+
+    \    \"Name\": \"Dairy Hills Project\",\r
+
+    \    \"ObjectID\": \"e8a45835-e30b-4c5a-a622-598652e476f1\",\r
+
+    \    \"PrimaryCustomerCity\": \"Manchester\",\r
+
+    \    \"PrimaryCustomerName\": \"City Of Manchester\",\r
+
+    \    \"BondPercent\": 0.0,\r
+
+    \    \"BidDate\": \"2019-03-21T14:37:13\",\r
+
+    \    \"IsBidTimeIgnored\": true,\r
+
+    \    \"ProjectName\": \"Dairy Hills Project\",\r
+
+    \    \"ProjectedValue\": 0.0,\r
+
+    \    \"PrimaryContactREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"PlanURL\": \"www.google.com\",\r
+
+    \    \"CreatedByInitials\": \"BLT\",\r
+
+    \    \"CreatedOn\": \"2019-01-29T14:37:29.25\",\r
+
+    \    \"ModifiedByInitials\": \"SYS\",\r
+
+    \    \"ModifiedOn\": \"2023-06-16T14:10:17.983\"\r
+
+    }"
+order: 5000

@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborRateClassBurden?$filter=LaborRateClassREF eq
+  92ae87dc-0abc-443b-8b66-ebe6e9ac6d14"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: LaborRateClassREF eq 92ae87dc-0abc-443b-8b66-ebe6e9ac6d14
+order: 3000

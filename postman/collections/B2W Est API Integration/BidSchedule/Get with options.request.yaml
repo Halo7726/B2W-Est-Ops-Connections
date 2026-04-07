@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{BaseURL}}/BidSchedule?$filter=contains(Name, 'Dairy Hills')"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: contains(Name, 'Dairy Hills')
+order: 2000

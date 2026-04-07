@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/ManufacturerMaterial?$filter=Organizati\
+  onREF eq 767379B3-DEE9-4F63-B1A2-C4284F6699BB"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OrganizationREF eq 767379B3-DEE9-4F63-B1A2-C4284F6699BB
+order: 3000

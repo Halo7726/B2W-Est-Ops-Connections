@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/JobCostID"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+queryParams:
+  - key: ""
+    value: ""
+    disabled: true
+order: 9000

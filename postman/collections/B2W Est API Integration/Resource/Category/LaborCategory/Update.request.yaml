@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/LaborCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"eAdK36NFh06BZQ2y5+tqAQ==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"df4a0778-45a3-4e87-8165-0db2e7eb6a01\" //operators\r
+
+    }"
+order: 5000

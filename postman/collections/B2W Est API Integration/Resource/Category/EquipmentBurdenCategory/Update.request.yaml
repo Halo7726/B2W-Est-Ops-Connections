@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/EquipmentBurdenCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"8E6gfwMvKkikyiOqr0ydgg==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \t\"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"7fa04ef0-2f03-482a-a4ca-23aaaf4c9d82\" //Ownership\r
+
+    }"
+order: 5000

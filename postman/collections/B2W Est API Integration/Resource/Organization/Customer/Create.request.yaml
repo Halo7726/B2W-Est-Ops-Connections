@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Customer"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Category\": \"Private\",\r
+
+    \    \"AccountingNumber\": \"0002\",\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Fax\": \"1234567890\",\r
+
+    \    \"Phone\": \"1234566543\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"DistributionMethod\": {\r
+
+    \        \"Fax\": true,\r
+
+    \        \"Print\": true,\r
+
+    \        \"Email\": true\r
+
+    \    },\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 5000

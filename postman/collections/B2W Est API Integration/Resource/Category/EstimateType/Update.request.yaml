@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/EstimateType"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"Xl7a0+KMvU+w/l3JE6Y50A==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",    \r
+
+    \    \"Name\": \"EstAPI 01\",\r
+
+    \    \"ObjectID\": \"d3da5e5e-8ce2-4fbd-b0fe-5dc913a639d0\" //Private\r
+
+    }"
+order: 5000

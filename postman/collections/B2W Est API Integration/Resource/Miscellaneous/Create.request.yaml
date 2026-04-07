@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Miscellaneous"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\"MiscellaneousCategory\": \"Fees\",\r
+
+    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \"ImperialUnitOfMeasure\": \"EACH\",\r
+
+    \"JobCostIDCode\": \"1000\",\r
+
+    \"MetricUnitOfMeasure\": \"EACH\",\r
+
+    \"Name\": \"some name\",\r
+
+    \"Notes\":\"note!2\",\r
+
+    \"UnitCost\": 1,\r
+
+    \"UnitCostSystemOfMeasure\": \"Metric\"\r
+
+    }"
+order: 4000

@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/EngineerArchitect"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Category\": \"Highway\",\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Address2\": \"Suite 101\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 5000

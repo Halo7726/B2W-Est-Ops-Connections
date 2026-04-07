@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/MaterialCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"i2g2A937dkO8a5ps8+H67Q==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"0336688b-fbdd-4376-bc6b-9a6cf3e1faed\"\r
+
+    }"
+order: 5000

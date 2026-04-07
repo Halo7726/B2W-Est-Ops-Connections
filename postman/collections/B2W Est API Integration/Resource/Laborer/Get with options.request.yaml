@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Laborer?$filter=LaborRateClassREF eq
+  3B5A3C66-C18D-466F-8146-63101B2BDDC9 and LaborTypeREF eq
+  3CE028BC-F63C-42B1-84E4-8195CFEB8E75"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: LaborRateClassREF eq 3B5A3C66-C18D-466F-8146-63101B2BDDC9 and
+    LaborTypeREF eq 3CE028BC-F63C-42B1-84E4-8195CFEB8E75
+order: 3000

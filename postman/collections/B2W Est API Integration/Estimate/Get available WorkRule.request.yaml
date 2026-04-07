@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/WorkRule?$orderby=Name"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+queryParams:
+  $orderby: Name
+order: 13000

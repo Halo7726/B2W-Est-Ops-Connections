@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationWorkSubtype?$filter=Organiz\
+  ationREF eq 360d6cc5-3f34-45d1-a204-16deacb197e7"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OrganizationREF eq 360d6cc5-3f34-45d1-a204-16deacb197e7
+order: 3000

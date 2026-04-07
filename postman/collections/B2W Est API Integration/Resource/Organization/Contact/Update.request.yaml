@@ -1,0 +1,30 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Contact"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"2G1GjLzADEmj72azul2iKg==_BWsFnj7OyUCVSB2gTVTgOA==\",\r
+
+    \    \"ObjectID\": \"8c466dd8-c0bc-490c-a3ef-66b3ba5da22a\",\r
+
+    \    \"OrganizationREF\": \"9e056b05-ce3e-40c9-9548-1da04d54e038\",\r
+
+    \    \"Email\": \"manager@gmail.com\",\r
+
+    \    \"Fax\": \"(603) 999-9999\",\r
+
+    \    \"IsDefaultContact\": true,\r
+
+    \    \"MobileNumber\": \"(603) 999-9999\",\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"Title\": \"Manager\"\r
+
+    }"
+order: 5000

@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Subcategory/WorkSubtype"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"CategoryREF\": \"f904e87c-78d8-4e9c-888e-030695b38e74\",
+    //Electrical\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\"\r
+
+    }"
+order: 4000

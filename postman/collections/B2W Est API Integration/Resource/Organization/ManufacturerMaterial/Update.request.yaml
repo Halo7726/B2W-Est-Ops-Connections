@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/ManufacturerMaterial"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"9grrqiKJzkalaBlmihZYyw==_s3lzduneY0+xosQoT2aZuw==_FKAfmZ1dbUGD/aMpAxdciw==\
+    \",\r
+
+    \    \"MaterialREF\": \"991fa014-5d9d-416d-83fd-a32903175c8b\", // Spikes
+    5/8 X 6\r
+
+    \    \"ObjectID\": \"aaeb0af6-8922-46ce-a568-19668a1658cb\",\r
+
+    \    \"PartNumber\": \"Updated Part Number\",\r
+
+    \    \"OrganizationREF\": \"767379b3-dee9-4f63-b1a2-c4284f6699bb\" //
+    Quality Manufacturers\r
+
+    }"
+order: 5000

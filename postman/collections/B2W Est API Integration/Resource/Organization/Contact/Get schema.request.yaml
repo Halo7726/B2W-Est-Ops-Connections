@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Contact/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 1000

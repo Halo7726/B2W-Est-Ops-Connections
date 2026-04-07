@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/EstimateStatus"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"8dDDDnl0rUeNn/XE/XnywQ==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"0ec3d0f1-7479-47ad-8d9f-f5c4fd79f2c1\" //Dead\r
+
+    }"
+order: 5000

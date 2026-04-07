@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Miscellaneous"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \"AntiTamperToken\":
+    \"c128jR+rMkObuAbC3UtVHQ==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \"MiscellaneousCategory\": \"Fees\",\r
+
+    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \"ImperialUnitOfMeasure\": \"EACH\",\r
+
+    \"ObjectID\": \"8dbc5d73-ab1f-4332-9bb8-06c2dd4b551d\",\r
+
+    \"JobCostIDCode\": \"1000\",\r
+
+    \"MetricUnitOfMeasure\": \"EACH\",\r
+
+    \"Name\": \"some name\",\r
+
+    \"Notes\":\"note!2\",\r
+
+    \"UnitCost\": 1,\r
+
+    \"UnitCostSystemOfMeasure\": \"Metric\"\r
+
+    }"
+order: 5000

@@ -1,0 +1,68 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Material"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \"AntiTamperToken\":
+    \"dZCNxqhHBUuUl5hAT5TgIg==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \"Category\": \"Bridge\",\r
+
+    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \"ImperialUnitOfMeasure\": \"EACH\",\r
+
+    \"IsTemporaryMaterial\": true,\r
+
+    \"JobCostIDCode\": \"RAIL02\",\r
+
+    \"MetricUnitOfMeasure\": \"EACH\",\r
+
+    \"Name\": \"115 LB Rail 5\",\r
+
+    \"Notes\":\"note!2\",\r
+
+    \"ObjectID\": \"c68d9075-47a8-4b05-9497-98404f94e022\",\r
+
+    \"Subcategory\" : \"Beam\",\r
+
+    \"BaseCost\": 1,\r
+
+    \"WeightValue\": 1,\r
+
+    \"WeightImperialUnitOfMeasure\": \"LB\",\r
+
+    \"WeightMetricUnitOfMeasure\": \"kg\",\r
+
+    \"WeightSystemOfMeasure\": \"Metric\",\r
+
+    \"WastePercent\": 3,\r
+
+    \"TruckingCost\": 3,\r
+
+    \"TruckingCostSystemOfMeasure\": \"Metric\",\r
+
+    \"BaseCostSystemOfMeasure\": \"Metric\",\r
+
+    \"TaxPercent\": 3,\r
+
+    \"TotalVolumeValue\" : 3,\r
+
+    \"TotalVolumeImperialUnitOfMeasure\" : \"CF\",\r
+
+    \"TotalVolumeMetricUnitOfMeasure\" : \"L\",\r
+
+    \"TotalVolumeSystemOfMeasure\" : \"Metric\",\r
+
+    \"ShouldRoundQuantity\": true,\r
+
+    \"QuantityRoundingIncrement\": 50,\r
+
+    \"QuantityRoundingIncrementSystemOfMeasure\": \"Imperial\"\r
+
+    }"
+order: 5000

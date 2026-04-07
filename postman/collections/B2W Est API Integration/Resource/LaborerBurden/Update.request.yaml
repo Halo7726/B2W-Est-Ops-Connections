@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborerBurden"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"lPWsuyJrFU26LgAAaYd9EA==_AAAAAAAAAAAAAAAAAAAAAA==_3FZ8qZjEAU+McB6MxnHLlA=\
+    =_oPmp/U7I8UCEy6wGZYL+Aw==\",\r
+
+    \    \"AddBurdenAs\": \"PercentOfBase\",\r
+
+    \    \"ApplyToOvertime\": \"OvertimeRate\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"LaborBurdenREF\": \"a97c56dc-c498-4f01-8c70-1e8cc671cb94\", // FICA\r
+
+    \    \"ObjectID\": \"bbacf594-6b22-4d15-ba2e-000069877d10\", // Rate Class =
+    Standard. Labor Type = Pressure Digger Operator. Burden = FICA\r
+
+    \    \"OwnerREF\": \"fda9f9a0-c84e-40f1-84cb-ac066582fe03\", //  Pressure
+    Digger Operator in Standard Rate Class\r
+
+    \    \"Value\": 0.1\r
+
+    }"
+order: 5000

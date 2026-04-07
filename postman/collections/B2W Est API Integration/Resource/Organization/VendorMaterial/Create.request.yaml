@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/VendorMaterial"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"BasePrice\": 100.0,\r
+
+    \    \"BasePriceSystemOfMeasure\": \"Imperial\",\r
+
+    \    \"TaxPercent\": 0.05,\r
+
+    \    \"TruckingPrice\": 55.0,\r
+
+    \    \"TruckingPriceSystemOfMeasure\": \"Imperial\",\r
+
+    \    \"MaterialREF\": \"D6815371-4BA7-4F7A-AC4D-6EDCD063D6CB\", //Wire - Guy
+    Wire\r
+
+    \    \"PartNumber\": \"APIMaterial\",\r
+
+    \    \"OrganizationREF\": \"F28A6058-3933-4EFB-A606-2B7151629CE3\" //Windy
+    City Materials\r
+
+    }\r\n"
+order: 4000

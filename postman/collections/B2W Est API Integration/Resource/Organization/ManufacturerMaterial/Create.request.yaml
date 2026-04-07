@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/ManufacturerMaterial"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"MaterialREF\": \"4CB3A73C-2FD0-461F-8954-812CE0ED087F\", //asphalt
+    base\r
+
+    \    \"PartNumber\": \"Part 11111-1\",\r
+
+    \    \"OrganizationREF\": \"767379b3-dee9-4f63-b1a2-c4284f6699bb\" //
+    Quality Manufacturers\r
+
+    }"
+order: 4000

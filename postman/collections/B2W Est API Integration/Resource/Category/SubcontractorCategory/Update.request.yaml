@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/SubcontractorCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"B7U3Fw7GhEyj0SzjBUkEZw==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"1737b507-c60e-4c84-a3d1-2ce305490467\" // northeast\r
+
+    }"
+order: 5000

@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/VendorMaterial"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \        \"BasePrice\": 42.0,\r
+
+    \        \"BasePriceSystemOfMeasure\": \"Imperial\",\r
+
+    \        \"TaxPercent\": 0.05,\r
+
+    \        \"TruckingPrice\": 100.0,\r
+
+    \        \"TruckingPriceSystemOfMeasure\": \"Imperial\",\r
+
+    \        \"AntiTamperToken\":
+    \"X+5vB51idkWb9iniXSMsPw==_nNoVOKyMZEmqor602tILKg==_PKezTNAvH0aJVIEs4O0Ifw==\
+    \",\r
+
+    \        \"ObjectID\": \"076fee5f-629d-4576-9bf6-29e25d232c3f\",\r
+
+    \        \"MaterialREF\": \"4cb3a73c-2fd0-461f-8954-812ce0ed087f\",
+    //Asphalt Base\r
+
+    \        \"OrganizationREF\": \"3815da9c-8cac-4964-aaa2-beb4dad20b2a\"
+    //ACME Crushed Stone\r
+
+    }"
+order: 5000

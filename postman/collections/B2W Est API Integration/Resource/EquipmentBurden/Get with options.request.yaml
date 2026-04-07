@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentBurden?$filter=EstimateREF eq
+  00000000-0000-0000-0000-000000000000"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: EstimateREF eq 00000000-0000-0000-0000-000000000000
+order: 3000

@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Subcategory/TagValue"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"CategoryREF\": \"9c2a41b5-664a-43cd-8256-8f3964ed1681\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\"\r
+
+    }"
+order: 4000

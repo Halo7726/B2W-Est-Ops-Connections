@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/MinorityParticipationRequirement"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"AbcKrsY5pEitbbtiAhL4sA==_6j6kOJfT9UWYxbnRng2xlA==_fUkUSA6vAECOhKxGAOvIag==\
+    \",\r
+
+    \    \"ObjectID\": \"ae0ab701-39c6-48a4-ad6d-bb620212f8b0\",\r
+
+    \    \"MinorityTypeREF\": \"4814497d-af0e-4000-8e84-ac4600ebc86a\",
+    //Disadvantaged Business Enterprise\r
+
+    \    \"EstimateREF\": \"38a43eea-d397-45f5-98c5-b9d19e0db194\", //Kits Park
+    Development\r
+
+    \    \"Percent\": 0.25 \r
+
+    }"
+order: 5000

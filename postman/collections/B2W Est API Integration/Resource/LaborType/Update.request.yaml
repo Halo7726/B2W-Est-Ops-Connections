@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborType"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"03WtoC2a906yHRvrq/amlw==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"Category\": \"Supervisory\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"a0ad75d3-9a2d-4ef7-b21d-1bebabf6a697\" //Auger
+    Operator\r
+
+    }"
+order: 5000

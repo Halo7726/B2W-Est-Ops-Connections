@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate?$filter=contains(Name, 'Fox')"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: contains(Name, 'Fox')
+order: 4000

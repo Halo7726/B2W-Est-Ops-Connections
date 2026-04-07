@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborerBurden"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "// SPECIAL INSTRUCTIONS: \r
+
+    // For this request to work with sample data, remove the LaborerBurden
+    listed below from the indicated Laborer (OwnerREF) in B2WSample.\r
+
+    {\r
+
+    \    \"AddBurdenAs\": \"PerHour\",\r
+
+    \    \"ApplyToOvertime\": \"DoNotApply\",\r
+
+    \    \"LaborBurdenREF\": \"A97C56DC-C498-4F01-8C70-1E8CC671CB94\", //FICA\r
+
+    \    \"OwnerREF\": \"915F8FF8-FF82-49B0-AB7D-8FBB5EFD939C\", //Crane
+    Operator, Standard Rate Class \r
+
+    \    \"Value\": 10.0\r
+
+    }"
+order: 4000

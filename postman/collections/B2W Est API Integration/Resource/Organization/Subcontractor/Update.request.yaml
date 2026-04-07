@@ -1,0 +1,47 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Subcontractor"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"LEIlgbFsCEann3xx1JSOeg==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"8125422c-6cb1-4608-a79f-7c71d4948e7a\", //Coastal
+    Concrete\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Category\": \"Southeast\",\r
+
+    \    \"City\": \"Jacksonville\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"DistributionMethod\": {\r
+
+    \        \"Fax\": false,\r
+
+    \        \"Print\": true,\r
+
+    \        \"Email\": true \r
+
+    \        },\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"FL\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 6000

@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationWorkSubtype"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "// NOTE: The OrganizationWorkTypes\\Created (201) request must be sent
+    first to associate a Work Type to the Burton's Striping subcontractor. Then
+    send this request to associate the Asphalt\\Delivery Work Subtype to
+    Burton's Striping.\r
+
+    {\r
+
+    \    \"WorkSubtypeCategoryREF\": \"C941627A-7664-4ABD-AEFD-4FE68433DEE6\",
+    // Demolition\\Site Preparation\r
+
+    \    \"OrganizationREF\": \"3950380B-D0AC-46A8-B077-BD4E94299F61\" //
+    Burton's Striping\r
+
+    }"
+order: 4000

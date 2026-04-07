@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationWorkType"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"WorkTypeCategoryREF\": \"B82158AB-5DB2-4E2D-AD81-8C6257C0EB88\", //
+    Demolition \r
+
+    \    \"OrganizationREF\": \"3950380B-D0AC-46A8-B077-BD4E94299F61\" //
+    Burton's Striping\r
+
+    }"
+order: 4000

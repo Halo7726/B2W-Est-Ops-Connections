@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationMinorityType?$filter=Organi\
+  zationREF eq E0D91A31-0049-456F-B005-BE0B8297E84F"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OrganizationREF eq E0D91A31-0049-456F-B005-BE0B8297E84F
+order: 3000

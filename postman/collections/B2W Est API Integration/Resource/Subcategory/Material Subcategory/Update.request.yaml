@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Subcategory/MaterialSubcategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"sjaayokzHES+0URUT//gag==_AAAAAAAAAAAAAAAAAAAAAA==_Gec3fFcD2E6UkyO2ASFwTQ==\
+    \",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"CategoryREF\": \"7c37e719-0357-4ed8-9493-23b60121704d\", // Saw
+    Blades\r
+
+    \    \"ObjectID\": \"ca9a36b2-3389-441c-bed1-44544fffe06a\" // Crosscut\r
+
+    }"
+order: 5000

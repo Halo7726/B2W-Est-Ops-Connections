@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/EngineerArchitectCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"nfSxk1zVEUalkK93ZHexoQ==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"93b1f49d-d55c-4611-a590-af776477b1a1\"
+    //Environmental\r
+
+    }"
+order: 5000

@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Subcontractor"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Category\": \"Southeast\",\r
+
+    \    \"DistributionMethod\": { \r
+
+    \        \"Fax\": true, \r
+
+    \        \"Print\": false, \r
+
+    \        \"Email\": true \r
+
+    \        },\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 5000

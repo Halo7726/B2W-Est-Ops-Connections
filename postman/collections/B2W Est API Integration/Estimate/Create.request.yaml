@@ -1,0 +1,61 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"BidAs\": \"Subcontractor\",\r
+
+    \    \"EstimateType\": \"Public\",\r
+
+    \    \"EstimateStatus\": \"Pending\",\r
+
+    \    \"DefaultEquipmentRateClass\": \"Region 2 Office\",\r
+
+    \    \"DefaultLaborRateClass\": \"Standard\",\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"Number\": \"001\",\r
+
+    \    \"PrimaryCustomerName\": \"Amtrak\",\r
+
+    \    \"PrimaryCustomerCity\": \"Philadelphia\",\r
+
+    \    \"BidNumber\": \"Bid 1\",\r
+
+    \    \"BondPercent\": 0.05,\r
+
+    \    \"BidDate\": \"2021-12-28T13:00:00\",\r
+
+    \    \"EstimateFolderPath\": \"/2010 Estimates\",\r
+
+    \    \"IsBidTimeIgnored\": true,\r
+
+    \    \"BidLocation\": \"Manchester, NH\",\r
+
+    \    \"ProjectName\": \"Elm Street Bridge Improvements, Manchester\",\r
+
+    \    \"ProjectedValue\": 100000.0,\r
+
+    \    \"ProjectLocation\": \"Manchester, NH\",\r
+
+    \    \"ProjectCity\": \"Manchester\",\r
+
+    \    \"ProjectState\": \"NH\",\r
+
+    \    \"ProjectZip\": \"03101\",\r
+
+    \    \"LiquidatedDamages\": 2.5,\r
+
+    \    \"LiquidatedDamagesUnitOfMeasure\": \"DY\",\r
+
+    \    \"JobNumber\": \"2010-101\",\r
+
+    \    \"EstimatorName\": \"Paul Smith\"\r
+
+    }"
+order: 23000

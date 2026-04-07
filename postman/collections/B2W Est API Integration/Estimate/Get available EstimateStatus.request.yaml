@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/EstimateStatus"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 7000

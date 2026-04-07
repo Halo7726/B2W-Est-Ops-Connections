@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborerBurden?$filter=OwnerREF eq
+  915F8FF8-FF82-49B0-AB7D-8FBB5EFD939C"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OwnerREF eq 915F8FF8-FF82-49B0-AB7D-8FBB5EFD939C
+order: 3000

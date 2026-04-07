@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{BaseURL}}/login"
+method: GET
+headers:
+  userName: "{{UserName}}"
+  password: "{{Password}}"
+  ConnectionString: "{{ConnectionString}}"
+order: 6000

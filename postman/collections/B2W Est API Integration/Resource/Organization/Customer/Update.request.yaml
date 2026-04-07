@@ -1,0 +1,47 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Customer"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"yPifcS+gm06pOahpcAYLnA==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"719ff8c8-a02f-4e9b-a939-a86970060b9c\", //Agnerson
+    Construction\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"Category\": \"Federal\",\r
+
+    \    \"City\": \"Jupiter\",\r
+
+    \    \"Address1\": \"45 Bushmills Rd.\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"FL\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"DistributionMethod\": {\r
+
+    \        \"Fax\": true,\r
+
+    \        \"Print\": true,\r
+
+    \        \"Email\": true\r
+
+    \    },\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 6000

@@ -1,0 +1,53 @@
+$kind: http-request
+url: "{{BaseURL}}/BidSchedule"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"BidAs\": \"Subcontractor\",\r
+
+    \    \"EstimateType\": \"Public\",\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"Number\": \"001\",\r
+
+    \    \"PrimaryCustomerName\": \"Amtrak\",\r
+
+    \    \"PrimaryCustomerCity\": \"Philadelphia\",\r
+
+    \    \"BidNumber\": \"Bid 1\",\r
+
+    \    \"BondPercent\": 0.05,\r
+
+    \    \"BidDate\": \"2021-12-28T13:00:00\",\r
+
+    \    \"EstimateFolderPath\": \"\",\r
+
+    \    \"IsBidTimeIgnored\": true,\r
+
+    \    \"BidLocation\": \"Manchester, NH\",\r
+
+    \    \"ProjectName\": \"Elm Street Bridge Improvements, Manchester\",\r
+
+    \    \"ProjectedValue\": 100000.0,\r
+
+    \    \"ProjectLocation\": \"Manchester, NH\",\r
+
+    \    \"ProjectCity\": \"Manchester\",\r
+
+    \    \"ProjectState\": \"NH\",\r
+
+    \    \"ProjectZip\": \"03101\",\r
+
+    \    \"JobNumber\": \"2010-101\",\r
+
+    \    \"EstimatorName\": \"Paul Smith\",\r
+
+    \    \"PlanURL\": \"www.google.com\"\r
+
+    }"
+order: 4000

@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Subcontractor/Category"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+  EstimateREF: 00000000-0000-0000-0000-000000000000
+order: 4000

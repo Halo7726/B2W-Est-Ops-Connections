@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/MinorityParticipationRequirement?$filter=EstimateREF
+  eq 02E2BD02-B667-4478-A1C6-76DEDFB8958F"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: EstimateREF eq 02E2BD02-B667-4478-A1C6-76DEDFB8958F
+body:
+  type: formdata
+  content:
+    - type: text
+      key: EstimateREF
+      value: 02E2BD02-B667-4478-A1C6-76DEDFB8958F
+order: 3000

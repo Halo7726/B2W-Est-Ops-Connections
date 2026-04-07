@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Vendor"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Category\": \"Southeast\",\r
+
+    \    \"Address1\": \"122 Maple Ave\",\r
+
+    \    \"Address2\": \"Suite 100\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"IsOwned\": true,\r
+
+    \    \"DistributionMethod\": {\r
+
+    \        \"Fax\": true,\r
+
+    \        \"Print\": true,\r
+
+    \        \"Email\": true\r
+
+    \    },\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 5000

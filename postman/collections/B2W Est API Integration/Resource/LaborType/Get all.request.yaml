@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborType"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 2000

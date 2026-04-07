@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Manufacturer"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"s3lzduneY0+xosQoT2aZuw==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"767379b3-dee9-4f63-b1a2-c4284f6699bb\", //Quality
+    Manufacturers\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Address1\": \"122 Maple Ave\",\r
+
+    \    \"Category\": \"Pre-Contracted\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"IsOwned\": true,\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 6000

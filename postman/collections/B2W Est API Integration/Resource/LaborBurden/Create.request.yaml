@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborBurden"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AppliesToWorkersComp\": true,\r
+
+    \    \"Category\": \"Misc.\",\r
+
+    \    \"EstimateREF\": \"02E2BD02-B667-4478-A1C6-76DEDFB8958F\", //Fox Hill
+    Development\r
+
+    \    \"IsBurdenable\": true,\r
+
+    \    \"Name\": \"API\"\r
+
+    }"
+order: 4000

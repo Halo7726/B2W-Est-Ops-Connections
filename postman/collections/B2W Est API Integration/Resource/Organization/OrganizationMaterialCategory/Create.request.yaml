@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationMaterialCategory"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"MaterialCategoryREF\": \"1E786851-BD9E-49C6-B758-D0D0EBCA671A\", //
+    Erosion Control\r
+
+    \    \"OrganizationREF\": \"767379B3-DEE9-4F63-B1A2-C4284F6699BB\" //
+    Quality Manufacturers\r
+
+    }"
+order: 4000

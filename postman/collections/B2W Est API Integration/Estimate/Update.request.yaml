@@ -1,0 +1,62 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: " {\r
+
+    \    \"AntiTamperToken\": \"BGu2MtwPn0COEKpvXPD8bg==_QlNK_AF9+Exczywg=\",\r
+
+    \    \"BidAs\": \"General Contractor\",\r
+
+    \    \"DefaultEquipmentRateClass\": \"Standard\",\r
+
+    \    \"EstimateType\": \"Public\",\r
+
+    \    \"EstimateStatus\": \"Signed\",\r
+
+    \    \"DefaultLaborRateClass\": \"Standard\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"Number\": \"0006\",\r
+
+    \    \"ObjectID\": \"32b66b04-0fdc-409f-8e10-aa6f5cf0fc6e\", //Elm Street
+    Bridge Improvements, Manchester\r
+
+    \    \"PrimaryCustomerCity\": \"Manchester\",\r
+
+    \    \"PrimaryCustomerName\": \"City Of Manchester\",\r
+
+    \    \"BondPercent\": 0.05,\r
+
+    \    \"BidDate\": \"2018-12-28T13:00:00\",\r
+
+    \    \"IsBidTimeIgnored\": false,\r
+
+    \    \"BidLocation\": \"Manchester, NH\",\r
+
+    \    \"ProjectName\": \"Elm Street Bridge Improvements, Manchester\",\r
+
+    \    \"ProjectedValue\": 100000.0,\r
+
+    \    \"LiquidatedDamages\": 0.0,\r
+
+    \    \"LiquidatedDamagesUnitOfMeasure\": \"DY\",\r
+
+    \    \"JobNumber\": \"2010-101\",\r
+
+    \    \"EstimatorName\": \"Paul Smith\",\r
+
+    \    \"PrimaryContactREF\": \"c1f8756e-5ec7-4384-89db-873eb26520cd\",\r
+
+    \    \"CreatedByInitials\": \"BSJ\",\r
+
+    \    \"CreatedOn\": \"2008-12-23T13:11:18\",\r
+
+    \    \"ModifiedByInitials\": \"SYS\",\r
+
+    \    \"ModifiedOn\": \"2021-01-08T11:04:57.077\"}"
+order: 24000

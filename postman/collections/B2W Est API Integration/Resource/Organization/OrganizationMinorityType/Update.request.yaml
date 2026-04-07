@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationMinorityType"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"/nVy01wxdk2u+PhLVdfRag==_MRrZ4EkAb0WwBb4LgpfoTw==_C5Td6HGLZkO2qrX5Fgd6xQ=\
+    =_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"d37275fe-315c-4d76-aef8-f84b55d7d16a\",\r
+
+    \    \"OrganizationREF\": \"e0d91a31-0049-456f-b005-be0b8297e84f\",
+    //Evergreen Development & Construction Co.\r
+
+    \    \"MinorityTypeREF\": \"e8dd940b-8b71-4366-b6aa-b5f916077ac5\",\r
+
+    \    \"ParticipationPercent\": 1.0,\r
+
+    \    \"IsDefault\": true\r
+
+    }"
+order: 5000

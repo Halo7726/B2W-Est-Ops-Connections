@@ -1,0 +1,81 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Material"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \"Category\": \"Bridge\",\r
+
+    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \"ImperialUnitOfMeasure\": \"EACH\",\r
+
+    \"IsTemporaryMaterial\": false,\r
+
+    \"JobCostIDCode\": \"RAIL02\",\r
+
+    \"MetricUnitOfMeasure\": \"EACH\",\r
+
+    \"Name\": \"111 LB Rail3\",\r
+
+    \"Notes\":\"note!2\",\r
+
+    \"Subcategory\" : \"Beam\",\r
+
+    \"BaseCost\": 1,\r
+
+    \"WeightValue\": 1,\r
+
+    \"WeightImperialUnitOfMeasure\": \"LB\",\r
+
+    \"WeightMetricUnitOfMeasure\": \"kg\",\r
+
+    \"WeightSystemOfMeasure\": \"Metric\",\r
+
+    \"HeightValue\": 3,\r
+
+    \"HeightImperialUnitOfMeasure\": \"INCH\",\r
+
+    \"HeightMetricUnitOfMeasure\": \"m\",\r
+
+    \"HeightSystemOfMeasure\": \"Metric\",\r
+
+    \"LengthValue\": 3,\r
+
+    \"LengthImperialUnitOfMeasure\": \"INCH\",\r
+
+    \"LengthMetricUnitOfMeasure\": \"m\",\r
+
+    \"LengthSystemOfMeasure\": \"Metric\",\r
+
+    \"WidthValue\": 3,\r
+
+    \"WidthImperialUnitOfMeasure\": \"INCH\",\r
+
+    \"WidthMetricUnitOfMeasure\": \"m\",\r
+
+    \"WidthSystemOfMeasure\": \"Metric\",\r
+
+    \"WastePercent\": 3,\r
+
+    \"TruckingCost\": 3,\r
+
+    \"TruckingCostSystemOfMeasure\": \"Metric\",\r
+
+    \"BaseCostSystemOfMeasure\": \"Metric\",\r
+
+    \"TaxPercent\": 3,\r
+
+    \"IsTotalVolumeByDimensions\" : true,\r
+
+    \"ShouldRoundQuantity\": true,\r
+
+    \"QuantityRoundingIncrement\": 20,\r
+
+    \"QuantityRoundingIncrementSystemOfMeasure\": \"Imperial\"\r
+
+    }"
+order: 4000

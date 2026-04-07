@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/BidAs"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"xMWcjzI1akOlS0dDS4P7tA==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\", \r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"8f9cc5c4-3532-436a-a54b-47434b83fbb4\" //General
+    Contractor\r
+
+    }"
+order: 5000

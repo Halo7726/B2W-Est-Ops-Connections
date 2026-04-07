@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentRateClassBurden?$filter=EquipmentRateClassR\
+  EF eq fca79f97-442d-49ec-b3c6-f56bb74f3590"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: EquipmentRateClassREF eq fca79f97-442d-49ec-b3c6-f56bb74f3590
+order: 3000

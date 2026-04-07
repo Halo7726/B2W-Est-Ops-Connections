@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentBurdenInstance?$filter=OwnerREF eq
+  ba232da4-3141-4d3f-af15-f1dd6f3a1ed9"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OwnerREF eq ba232da4-3141-4d3f-af15-f1dd6f3a1ed9
+order: 3000

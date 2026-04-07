@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/VendorMaterial?$filter=OrganizationREF
+  eq 3815DA9C-8CAC-4964-AAA2-BEB4DAD20B2A"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OrganizationREF eq 3815DA9C-8CAC-4964-AAA2-BEB4DAD20B2A
+order: 3000

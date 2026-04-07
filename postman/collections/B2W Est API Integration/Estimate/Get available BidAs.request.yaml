@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/BidAs"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000

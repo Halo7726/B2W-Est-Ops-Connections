@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/LaborBurden"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: " {\r
+
+    \    \"AntiTamperToken\":
+    \"3FZ8qZjEAU+McB6MxnHLlA==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"AppliesToWorkersComp\": false,\r
+
+    \    \"Category\": \"Tax\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"IsBurdenable\": false,\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"a97c56dc-c498-4f01-8c70-1e8cc671cb94\"  // FICA\r
+
+    }"
+order: 5000

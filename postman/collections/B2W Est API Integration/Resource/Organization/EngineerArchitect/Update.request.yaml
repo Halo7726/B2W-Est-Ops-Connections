@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/EngineerArchitect"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"pdVg6iDCIUSEPfpOH4IGlQ==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"ea60d5a5-c220-4421-843d-fa4e1f820695\", //Mike Brady
+    Engineering\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"Category\": \"Highway\",\r
+
+    \    \"City\": \"Orlando\",\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"FL\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 6000

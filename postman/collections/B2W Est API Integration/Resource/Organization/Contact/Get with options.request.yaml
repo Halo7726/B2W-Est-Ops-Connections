@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Contact?$filter=OrganizationREF eq
+  719FF8C8-A02F-4E9B-A939-A86970060B9C"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OrganizationREF eq 719FF8C8-A02F-4E9B-A939-A86970060B9C
+order: 3000

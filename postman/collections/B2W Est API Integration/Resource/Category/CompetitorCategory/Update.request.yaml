@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/CompetitorCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"52OK7eYCJkOyGKIxd96odA==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"ed8a63e7-02e6-4326-b218-a23177dea874\" //General
+    Contractor (Forestry Management)\r
+
+    }"
+order: 5000

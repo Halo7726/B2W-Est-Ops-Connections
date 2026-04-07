@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationMinorityType"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"OrganizationREF\": \"EA29A772-3E9E-42F4-A993-A4E01CB3E42B\",\r
+
+    \    \"MinorityTypeREF\": \"902C30BC-A159-4482-A01E-506BC734F3A2\",\r
+
+    \    \"ParticipationPercent\": 0.5,\r
+
+    \    \"IsDefault\": true\r
+
+    }"
+order: 4000

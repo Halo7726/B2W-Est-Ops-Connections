@@ -1,0 +1,15 @@
+$kind: http-request
+name: Get the WBS Apportioning to Pay Items values.
+url: "{{BaseURL}}/Estimate/WBSApportioning?objectId=0ED90CF5-2F33-4B30-964C-A2D\
+  401842958&$filter=ApportionmentQuantity eq 0"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+queryParams:
+  objectId: 0ED90CF5-2F33-4B30-964C-A2D401842958
+  $filter: ApportionmentQuantity eq 0
+order: 16000

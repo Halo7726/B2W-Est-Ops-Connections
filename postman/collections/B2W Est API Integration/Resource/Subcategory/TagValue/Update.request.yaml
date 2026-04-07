@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Subcategory/TagValue"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"f0ztUQKJOEGwGcbk6W1DZg==_AAAAAAAAAAAAAAAAAAAAAA==_tUEqnEpmzUOCVo85ZO0WgQ==\
+    \",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"CategoryREF\": \"9c2a41b5-664a-43cd-8256-8f3964ed1681\", //Year\r
+
+    \    \"ObjectID\": \"51ed4c7f-8902-4138-b019-c6e4e96d4366\" //2012\r
+
+    }"
+order: 5000

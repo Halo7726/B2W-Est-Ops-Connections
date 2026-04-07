@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/TaskComponent?$filter=EstimateREF eq
+  02E2BD02-B667-4478-A1C6-76DEDFB8958F"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+queryParams:
+  $filter: EstimateREF eq 02E2BD02-B667-4478-A1C6-76DEDFB8958F
+order: 18000

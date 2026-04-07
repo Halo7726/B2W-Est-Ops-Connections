@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Equipment?$filter=EquipmentRateClassREF eq
+  fca79f97-442d-49ec-b3c6-f56bb74f3590 and EquipmentTypeREF eq
+  3e4f5b09-d425-4080-9143-708a629594a2"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: EquipmentRateClassREF eq fca79f97-442d-49ec-b3c6-f56bb74f3590 and
+    EquipmentTypeREF eq 3e4f5b09-d425-4080-9143-708a629594a2
+order: 3000

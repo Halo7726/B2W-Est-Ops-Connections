@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/ManufacturerMaterial/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 1000

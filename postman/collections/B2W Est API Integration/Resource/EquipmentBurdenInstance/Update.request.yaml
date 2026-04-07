@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentBurdenInstance"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"d4Zr8wW9WkCWUzhKBG1v6Q==_AAAAAAAAAAAAAAAAAAAAAA==_7mKsjSKJJES98IfFx+X58g=\
+    =_eCXRTiV3e0+SDExEbI8uIQ==\",\r
+
+    \    \"AddBurdenAs\": \"PercentOfBase\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"EquipmentBurdenREF\": \"8dac62ee-8922-4424-bdf0-87c5c7e5f9f2\", //
+    Tires & Tread\r
+
+    \    \"ObjectID\": \"f36b8677-bd05-405a-9653-384a046d6fe9\",\r
+
+    \    \"OwnerREF\": \"4ed12578-7725-4f7b-920c-4c446c8f2e21\", // Pick-Up
+    Truck, Region 2 Office\r
+
+    \    \"Value\": 0.1\r
+
+    }"
+order: 5000

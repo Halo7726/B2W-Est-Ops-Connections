@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/ManufacturerCategory"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"TAhQGf+ib0OjS1Yda8gOsg==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"1950084c-a2ff-436f-a34b-561d6bc80eb2\" //finished
+    products\r
+
+    }"
+order: 5000

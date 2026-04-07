@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationMaterialSubcategory?$filter\
+  =OrganizationREF eq 2CEC787E-B9E8-42C0-9493-C33D56E6CBC3"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  $filter: OrganizationREF eq 2CEC787E-B9E8-42C0-9493-C33D56E6CBC3
+order: 3000

@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/MinorityType"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+order: 11000

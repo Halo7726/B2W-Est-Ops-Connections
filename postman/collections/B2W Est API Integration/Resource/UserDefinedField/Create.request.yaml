@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/UserDefinedField"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Value\": \"API\"\r
+
+    }"
+order: 4000

@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/BidSchedule"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 1000

@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/JobCostID"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"NhlcJLWzhUCcIs3wGhtAsw==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Description\": \"Updated Desc\",\r
+
+    \    \"Code\": \"API Update\",\r
+
+    \    \"ObjectID\": \"245c1936-b3b5-4085-9c22-cdf01a1b40b3\" // asphalt\r
+
+    }"
+order: 5000

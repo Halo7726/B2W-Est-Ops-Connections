@@ -1,0 +1,65 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentType"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"CVtPPiXUgECRQ3CKYpWUog==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"Category\": \"Cranes\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"HeightValue\": 0.0,\r
+
+    \    \"HeightImperialUnitOfMeasure\": \"FOOT\",\r
+
+    \    \"HeightMetricUnitOfMeasure\": \"m\",\r
+
+    \    \"HeightSystemOfMeasure\": \"Imperial\",\r
+
+    \    \"IsTotalVolumeByDimensions\": true,\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"3e4f5b09-d425-4080-9143-708a629594a2\", //30 Ton
+    Crane\r
+
+    \    \"LaborTypeREF\": \"3ce028bc-f63c-42b1-84e4-8195cfeb8e75\",\r
+
+    \    \"LengthValue\": 0.0,\r
+
+    \    \"LengthImperialUnitOfMeasure\": \"FOOT\",\r
+
+    \    \"LengthMetricUnitOfMeasure\": \"m\",\r
+
+    \    \"LengthSystemOfMeasure\": \"Imperial\",\r
+
+    \    \"TotalVolumeImperialUnitOfMeasure\": \"CY\",\r
+
+    \    \"TotalVolumeMetricUnitOfMeasure\": \"m3\",\r
+
+    \    \"TotalVolumeSystemOfMeasure\": \"Imperial\",\r
+
+    \    \"WeightValue\": 0.0,\r
+
+    \    \"WeightImperialUnitOfMeasure\": \"LB\",\r
+
+    \    \"WeightMetricUnitOfMeasure\": \"kg\",\r
+
+    \    \"WeightSystemOfMeasure\": \"Imperial\",\r
+
+    \    \"WidthValue\": 0.0,\r
+
+    \    \"WidthImperialUnitOfMeasure\": \"FOOT\",\r
+
+    \    \"WidthMetricUnitOfMeasure\": \"m\",\r
+
+    \    \"WidthSystemOfMeasure\": \"Imperial\"\r
+
+    }"
+order: 5000

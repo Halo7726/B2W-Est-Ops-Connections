@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Subcategory/MaterialSubcategory"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"CategoryREF\": \"5125ca0c-c1e7-4d78-a497-897abe0b348e\", //
+    Concrete\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\"\r
+
+    }"
+order: 4000

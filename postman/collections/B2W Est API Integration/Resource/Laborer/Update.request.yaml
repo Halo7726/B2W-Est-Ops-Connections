@@ -1,0 +1,52 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Laborer"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"cYTj8C+c+UiUwl87ms8gTQ==_AAAAAAAAAAAAAAAAAAAAAA==_vCjgPDz2sUKE5IGVz+uOdQ=\
+    =_ZjxaO43Bb0aBRmMQGyvdyQ==\",\r
+
+    \    \"BaseCost\": 22.0,\r
+
+    \    \"DaysPerMonth\": 21.5,\r
+
+    \    \"DaysPerWeek\": 5.0,\r
+
+    \    \"DoubleTimeFactor\": 2.0,\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"HoursPerMonth\": 173.0,\r
+
+    \    \"HoursPerWeek\": 40.0,\r
+
+    \    \"LaborRateClassREF\": \"3b5a3c66-c18d-466f-8146-63101b2bddc9\",
+    //Davis Bacon\r
+
+    \    \"LaborTypeREF\": \"3ce028bc-f63c-42b1-84e4-8195cfeb8e75\", //Crane
+    Operator\r
+
+    \    \"ObjectID\": \"f0e38471-9c2f-48f9-94c2-5f3b9acf204d\",\r
+
+    \    \"OvertimeAfter\": 8.0,\r
+
+    \    \"OvertimeFactor\": 1.5,\r
+
+    \    \"UseBurdenBreakdown\": true, //when set to False, then the following
+    keys are  required: BaseCost, DoubleTimeFactor, OvertimeFactor,
+    UnitOvertimeCost, UnitDoubletimeCost.  And these values must be in
+    agreement. E.g., BaseCost * OT Factor = Unit OT Cost. \r
+
+    \    \"WeeksPerMonth\": 4.3,\r
+
+    \    \"WorkHoursPerDay\": 8.0,\r
+
+    \    \"CostPer\": \"DY\"\r
+
+    }"
+order: 4000

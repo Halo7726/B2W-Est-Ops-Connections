@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Equipment"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"ohMd3dEpCESHEQbzB98fCg==_AAAAAAAAAAAAAAAAAAAAAA==_ub1xK9rmykSCXcMBwj297g=\
+    =_l5+n/C1E7EmzxvVrt081kA==\",\r
+
+    \    \"BaseCost\": 45.0,\r
+
+    \    \"JobCostIDCode\": \"1200\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"EquipmentRateClassREF\": \"fca79f97-442d-49ec-b3c6-f56bb74f3590\",\r
+
+    \    \"EquipmentTypeREF\": \"2b71bdb9-e6da-44ca-825d-c301c23dbdee\", //CAT D
+    4 Dozer\r
+
+    \    \"IsRental\": false,\r
+
+    \    \"RateClassSpecificNotes\": \"ERC Note has been updated for Region
+    2.\",\r
+
+    \    \"ObjectID\": \"dd1d13a2-29d1-4408-8711-06f307df1f0a\",\r
+
+    \    \"CostPer\": \"HR\",\r
+
+    \    \"UseBurdenBreakdown\": true,\r
+
+    \    \"FuelConsumptionRate\": 5.0,\r
+
+    \    \"EquipmentFuelType\": \"On-site Diesel\",\r
+
+    \    \"FuelConsumptionUnitOfMeasure\": \"HR\"\r
+
+    }"
+order: 4000

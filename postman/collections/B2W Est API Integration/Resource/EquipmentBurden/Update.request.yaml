@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentBurden"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"2YuuDC9XTUyBbTUgPhe3IA==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"Category\": \"Maintenance\", \r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"0cae8bd9-572f-4c4d-816d-35203e17b720\" //Depreciation\r
+
+    }"
+order: 5000

@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Competitor"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Name\": \"API\",\r
+
+    \    \"City\": \"Portsmouth\",\r
+
+    \    \"Category\": \"General Contractor (Forestry Management)\",\r
+
+    \    \"AccountingNumber\": \"0001\",\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Notes\": \"Notes\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"NH\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 5000

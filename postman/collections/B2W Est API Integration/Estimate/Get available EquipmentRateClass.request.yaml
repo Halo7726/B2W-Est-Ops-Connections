@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/EquipmentRateClass"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+order: 8000

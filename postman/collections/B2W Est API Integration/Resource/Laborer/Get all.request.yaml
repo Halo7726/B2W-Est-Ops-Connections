@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Laborer"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 2000

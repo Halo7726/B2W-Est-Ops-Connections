@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/Competitor"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"A3TQPAaKn0OS+tZmXhl8XA==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"ObjectID\": \"3cd07403-8a06-439f-92fa-d6665e197c5c\", //Stanley
+    Construction\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Category\": \"No Direct Competition\",\r
+
+    \    \"City\": \"Atlanta\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"AccountingNumber\": \"0001\",\r
+
+    \    \"Address1\": \"145 Red Leaf Drive\",\r
+
+    \    \"Country\": \"USA\",\r
+
+    \    \"Phone\": \"(123) 456-7890\",\r
+
+    \    \"State\": \"FL\",\r
+
+    \    \"Zip\": \"12345\",\r
+
+    \    \"JobCostIDCode\": \"12345\"\r
+
+    }"
+order: 6000

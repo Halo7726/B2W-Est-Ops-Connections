@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Subcategory/WorkSubtype"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"YCCde4bVUEWJ9W2x7PZa6w==_AAAAAAAAAAAAAAAAAAAAAA==_O6rntBUkm0mQF6tdUrcPcw==\
+    \",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"CategoryREF\": \"b4e7aa3b-2415-499b-9017-ab5d52b70f73\", // Sawing\r
+
+    \    \"ObjectID\": \"7b9d2060-d586-4550-89f5-6db1ecf65aeb\" // Cutting\r
+
+    }"
+order: 5000

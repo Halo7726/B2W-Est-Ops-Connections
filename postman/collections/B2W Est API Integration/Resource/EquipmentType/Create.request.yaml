@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentType"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"Category\": \"Loaders\",\r
+
+    \    \"Name\": \"API\"\r
+
+    }"
+order: 4000

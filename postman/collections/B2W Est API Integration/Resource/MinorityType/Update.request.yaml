@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/MinorityType"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"vDAskFmhgkSgHlBrxzTzog==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"Abbreviation\": \"E02\",\r
+
+    \    \"CountTowardsDBE\": false,\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"ObjectID\": \"902c30bc-a159-4482-a01e-506bc734f3a2\" //WBE\r
+
+    }"
+order: 5000

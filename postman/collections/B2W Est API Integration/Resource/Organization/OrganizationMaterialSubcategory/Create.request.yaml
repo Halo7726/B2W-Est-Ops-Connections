@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Organization/OrganizationMaterialSubcategory"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"MaterialSubcategoryREF\": \"C8AC7FAA-13B0-42BA-8B23-C3AA00883066\",
+    //Sand\r
+
+    \    \"OrganizationREF\": \"2cec787e-b9e8-42c0-9493-c33d56e6cbc3\"
+    //Atlantic Materials\r
+
+    }"
+order: 4000

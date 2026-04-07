@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/Category/MaterialCategory"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Name\": \"API\"\r
+
+    \r
+
+    }\r\n"
+order: 4000

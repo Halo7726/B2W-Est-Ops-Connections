@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/EquipmentBurdenInstance"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "// SPECIAL INSTRUCTIONS: \r
+
+    // For this request to work with sample data, remove the EquipmentBurden
+    listed below from the indicated Equipment (OwnerREF) in B2WSample.\r
+
+    {\r
+
+    \    \"AddBurdenAs\": \"PerHour\",\r
+
+    \    \"EquipmentBurdenREF\": \"8dac62ee-8922-4424-bdf0-87c5c7e5f9f2\",
+    //Tires & Tread\r
+
+    \    \"OwnerREF\": \"ba232da4-3141-4d3f-af15-f1dd6f3a1ed9\", // Pick Up
+    Truck, Standard RateClass\r
+
+    \    \"Value\": 10.0\r
+
+    }\r\n"
+order: 4000

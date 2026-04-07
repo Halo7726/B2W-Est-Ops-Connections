@@ -1,0 +1,67 @@
+﻿$kind: collection
+variables:
+  BaseURL: ""
+  ConnectionString: ""
+  Token: ""
+  UserName: ""
+  Password: ""
+  ClientID: ""
+  ClientSecret: ""
+scripts:
+  - type: http:beforeRequest
+    code: |-
+      pm.variables.set('Token', '?');
+
+      const userName = pm.variables.get('UserName');
+      const password = pm.variables.get('Password');
+      const connectionString = pm.variables.get('ConnectionString');
+      const clientId = pm.variables.get('ClientID');
+      const clientSecret = pm.variables.get('ClientSecret');
+
+      const headers = {
+        username: userName,
+        password: password
+      };
+
+      if (connectionString) {
+        headers.ConnectionString = connectionString;
+      }
+
+      const options = {
+        url: pm.variables.replaceIn('{{BaseURL}}/login'),
+        method: 'GET',
+        header: headers
+      };
+
+      pm.sendRequest(options, function (err, response) {
+        if (err) {
+          throw new Error(err);
+        }
+
+        let json = {};
+        try {
+          json = response.json();
+        } catch (e) {}
+
+        const token = json.AccessToken || json.accessToken || '';
+        if (!token) {
+          throw new Error('EST login failed: AccessToken missing from response.');
+        }
+
+        pm.variables.set('Token', token);
+
+        // Optional EST client header security can be enabled server-side.
+        if (clientId) {
+          pm.request.upsertHeader({ key: 'ClientID', value: clientId });
+        }
+        if (clientSecret) {
+          pm.request.upsertHeader({ key: 'ClientSecret', value: clientSecret });
+        }
+      });
+    language: text/javascript
+auth:
+  - id: 7197d0f4-8ae7-4874-bc0d-ad5150c224e0
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{Token}}"

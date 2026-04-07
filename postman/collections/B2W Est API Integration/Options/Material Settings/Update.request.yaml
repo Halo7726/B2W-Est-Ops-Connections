@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{BaseURL}}/Options/MaterialSettings"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"GWrh7XTsdUK+tKwYJv/ezw==_Ar3iAme2eEShxnbe37iVjw==\",\r
+
+    \    \"ObjectID\": \"EDE16A19-EC74-4275-BEB4-AC1826FFDECF\",\r
+
+    \    \"EstimateREF\": \"02E2BD02-B667-4478-A1C6-76DEDFB8958F\", //Fox Hill
+    Development\r
+
+    \    \"IsPermanentMaterialTaxDefaultPercentOverrideEnabled\": true,\r
+
+    \    \"IsTemporaryMaterialTaxDefaultPercentOverrideEnabled\": true,\r
+
+    \    \"PermanentMaterialTaxPercentOverride\": 0.03,\r
+
+    \    \"TemporaryMaterialTaxPercentOverride\": 0.05\r
+
+    }"
+order: 4000

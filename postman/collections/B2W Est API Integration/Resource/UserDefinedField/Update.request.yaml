@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{BaseURL}}/Resource/UserDefinedField"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"AntiTamperToken\":
+    \"M7cnwYZbBUyDrk8BAvxhig==_AAAAAAAAAAAAAAAAAAAAAA==\",\r
+
+    \    \"Name\": \"API Update\",\r
+
+    \    \"EstimateREF\": \"00000000-0000-0000-0000-000000000000\",\r
+
+    \    \"Value\": \"API Update\",\r
+
+    \    \"ObjectID\": \"c127b733-5b86-4c05-83ae-4f0102fc618a\" //Project
+    Manager\r
+
+    }"
+order: 5000

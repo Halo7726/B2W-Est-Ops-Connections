@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{BaseURL}}/Estimate/WBSLevel?$filter=EstimateREF eq
+  c84a5be7-85eb-493c-8e47-4f3067323e75  and contains(Name, 'Building')"
+method: GET
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ""
+    value: ""
+    disabled: true
+queryParams:
+  $filter: EstimateREF eq c84a5be7-85eb-493c-8e47-4f3067323e75  and contains(Name,
+    'Building')
+order: 15000
