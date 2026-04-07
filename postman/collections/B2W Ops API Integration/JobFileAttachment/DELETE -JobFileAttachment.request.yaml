@@ -1,0 +1,15 @@
+$kind: http-request
+name: DELETE /JobFileAttachment
+url: "{{BaseURL}}/JobFileAttachment"
+method: DELETE
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ObjectID
+    value: "{{ObjectID}}"
+    disabled: true
+queryParams:
+  - key: ObjectID
+    value: "{{ObjectID}}"
+    disabled: true
+order: 4000

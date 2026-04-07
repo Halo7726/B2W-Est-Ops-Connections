@@ -1,0 +1,28 @@
+$kind: http-example
+request:
+  url: "{{BaseURL}}/Login"
+  method: GET
+  headers:
+    - key: userName
+      value: "{{UserName}}"
+      description: "Domain user name (for example: DOMAIN\\\\user)"
+    - key: password
+      value: "{{Password}}"
+      description: User password
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: userName
+      value: "{{UserName}}"
+      description: "Domain user name (for example: DOMAIN\\\\user)"
+    - key: password
+      value: "{{Password}}"
+      description: User password
+  body:
+    type: json
+    content: '{"AccessToken":"<JWT_ACCESS_TOKEN>","RefreshToken":"<REFRESH_TOKEN>"}'
+order: 1000

@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /LaborType/schema
+description: Get the JSON schema associated with a model.
+url: "{{BaseURL}}/LaborType/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000

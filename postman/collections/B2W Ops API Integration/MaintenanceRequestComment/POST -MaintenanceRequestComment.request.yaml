@@ -1,0 +1,11 @@
+$kind: http-request
+name: POST /MaintenanceRequestComment
+description: Create a new entity based on the specified model.
+url: "{{BaseURL}}/MaintenanceRequestComment"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: ""
+order: 2000

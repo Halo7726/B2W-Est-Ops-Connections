@@ -1,0 +1,11 @@
+$kind: http-request
+name: POST /User
+description: Create a new entity based on the specified model.
+url: "{{BaseURL}}/User"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: ""
+order: 2000

@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /TrackWorkOrder/schema
+description: Get the JSON schema associated with a model.
+url: "{{BaseURL}}/TrackWorkOrder/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000

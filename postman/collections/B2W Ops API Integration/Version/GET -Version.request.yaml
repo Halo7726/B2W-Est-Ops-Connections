@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /Version
+description: Return the version of this OpsApi instance
+url: "{{BaseURL}}/Version"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 1000

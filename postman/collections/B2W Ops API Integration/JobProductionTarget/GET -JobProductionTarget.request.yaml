@@ -1,0 +1,29 @@
+$kind: http-request
+name: GET /JobProductionTarget
+description: Get a paginated collection of a model (mapped from an entity).
+url: "{{BaseURL}}/JobProductionTarget"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  - key: $top
+    value: "100"
+    disabled: true
+    description: OData limit
+  - key: $skip
+    value: "0"
+    disabled: true
+    description: OData offset
+  - key: $filter
+    value: startswith(Name,'A')
+    disabled: true
+    description: OData filter
+  - key: $orderby
+    value: Name asc
+    disabled: true
+    description: OData sort
+  - key: $select
+    value: Name
+    disabled: true
+    description: OData projection
+order: 1000

@@ -1,0 +1,10 @@
+$kind: http-request
+name: PUT /JobFileAttachment
+url: "{{BaseURL}}/JobFileAttachment"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: ""
+order: 3000

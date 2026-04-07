@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /JobEstimateItem/schema
+description: Get the JSON schema associated with a model.
+url: "{{BaseURL}}/JobEstimateItem/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000

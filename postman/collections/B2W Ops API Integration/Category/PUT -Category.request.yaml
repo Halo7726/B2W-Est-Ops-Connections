@@ -1,0 +1,12 @@
+$kind: http-request
+name: PUT /Category
+description: Update an entity based on the specified model. First get the entity
+  (based on its key), update relevant fields, and then PUT it.
+url: "{{BaseURL}}/Category"
+method: PUT
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: ""
+order: 3000

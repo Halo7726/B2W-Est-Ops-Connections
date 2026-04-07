@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /InternalTruck/schema
+description: Get the JSON schema associated with a model.
+url: "{{BaseURL}}/InternalTruck/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000

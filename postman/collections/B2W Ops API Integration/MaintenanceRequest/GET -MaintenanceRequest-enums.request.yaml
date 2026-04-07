@@ -1,0 +1,35 @@
+$kind: http-request
+name: GET /MaintenanceRequest/enums
+description: "Get the enumeration values for type, priority, and problem code
+  that a maintenance request can use.\r
+
+  Since all of these can have their values defined at runtime by the end-user of
+  Ops, they can't simply be pre-defined,\r
+
+  but needs to be retrieved from the database on-demand."
+url: "{{BaseURL}}/MaintenanceRequest/enums"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+queryParams:
+  - key: $top
+    value: "100"
+    disabled: true
+    description: OData limit
+  - key: $skip
+    value: "0"
+    disabled: true
+    description: OData offset
+  - key: $filter
+    value: startswith(Name,'A')
+    disabled: true
+    description: OData filter
+  - key: $orderby
+    value: Name asc
+    disabled: true
+    description: OData sort
+  - key: $select
+    value: Name
+    disabled: true
+    description: OData projection
+order: 1000

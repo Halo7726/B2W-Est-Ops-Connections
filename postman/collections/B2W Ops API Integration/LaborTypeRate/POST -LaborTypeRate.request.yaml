@@ -1,0 +1,11 @@
+$kind: http-request
+name: POST /LaborTypeRate
+description: Create a new entity based on the specified model.
+url: "{{BaseURL}}/LaborTypeRate"
+method: POST
+headers:
+  ConnectionString: "{{ConnectionString}}"
+body:
+  type: json
+  content: ""
+order: 2000

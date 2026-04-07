@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /EmployeeCertification/schema
+description: Get the JSON schema associated with a model.
+url: "{{BaseURL}}/EmployeeCertification/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000

@@ -1,0 +1,28 @@
+$kind: http-request
+name: GET /Login
+description: Validate the specified credentials against the domain controller
+  and respond with a JWT.
+url: "{{BaseURL}}/Login"
+method: GET
+headers:
+  userName: "{{UserName}}"
+  password: "{{Password}}"
+queryParams:
+  - key: username
+    value: "{{UserName}}"
+    disabled: true
+  - key: password
+    value: "{{Password}}"
+    disabled: true
+auth:
+  type: bearer
+  credentials:
+    token: "{{Token}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      const json = pm.response.json();
+      pm.environment.set("Token", json.AccessToken);
+    language: text/javascript
+examples: ./.resources/GET -Login.resources/examples
+order: 56000

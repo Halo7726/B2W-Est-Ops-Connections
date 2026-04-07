@@ -1,0 +1,47 @@
+$kind: http-example
+request:
+  url: "{{BaseURL}}/Job"
+  method: GET
+  headers:
+    - key: ConnectionString
+      value: "{{ConnectionString}}"
+      description: Tenant/database identifier required by the Ops API
+  queryParams:
+    - key: $top
+      value: "100"
+      disabled: true
+      description: OData page size
+    - key: $skip
+      value: "0"
+      disabled: true
+      description: OData offset
+    - key: $filter
+      value: startswith(Name,'A')
+      disabled: true
+      description: OData filter expression
+    - key: $orderby
+      value: Name asc
+      disabled: true
+      description: OData sort
+    - key: $select
+      value: Name
+      disabled: true
+      description: OData projection
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: ConnectionString
+      value: "{{ConnectionString}}"
+      description: Tenant/database identifier required by the Ops API
+  body:
+    type: json
+    content: '{"Pagination":{"CurrentPage":"{{BaseURL}}/Job?$orderBy=JobNumber&$skip=0&$top=2","ItemsOnPage":2,"PageSize":2,"TotalItems":55},"Items":[{"ObjectID":"1c4bb1a5-5d3c-4bad-9272-19ee33a91dd6","JobNumber":"1","IsActive":false,"BusinessUnitUniqueName":"Organization","ProjectName":"","Title":"Overhead
+      / Office Job","Notes":"Earn code =
+      VAC"},{"ObjectID":"fff4c376-d229-452d-ba50-eeaae0ce297e","JobNumber":"10003","IsActive":false,"BusinessUnitUniqueName":"SH
+      Creel
+      Pools","ProjectName":"Richardson","Title":"Richardson","Notes":"","JobStatus":"Complete"}]}'
+order: 1000

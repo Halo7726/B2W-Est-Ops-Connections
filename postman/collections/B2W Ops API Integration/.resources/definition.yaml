@@ -1,0 +1,93 @@
+$kind: collection
+name: B2W Ops API Integration
+description: >
+  ## B2W Ops API Integration
+
+
+  Requests in this collection interact with the **B2W Ops API** to read and
+  manage operational data (for example: jobs, employees, equipment, maintenance,
+  and related reference data). Requests are organized by resource type.
+
+
+  ### Authentication
+
+  - Collection auth uses **Bearer Token**: `{{Token}}`.
+
+  - A collection-level pre-request script attempts to obtain a token
+  automatically when `{{Token}}` is missing/blank (skips the `Login` request).
+
+
+  ### Required environment variables
+
+  Configure these in the **B2W Ops API** environment:
+
+  - `BaseURL` — API base host used by all requests.
+
+  - `ClientID`, `ClientSecret` — credentials used to obtain an access token.
+
+  - `Token` — bearer token used for authenticated requests.
+
+
+  Optional (only if used by your org / specific endpoints):
+
+  - `ConnectionString`, `UserName`, `Password`
+
+
+  ### Usage notes
+
+  - Most resource folders follow a consistent CRUD pattern (`GET` list/single,
+  `POST` create, `PUT` update, `DELETE` delete) plus `schema` endpoints when
+  available.
+
+  - For `PUT` requests, retrieve the current entity first, modify the necessary
+  fields, then submit the updated model.
+variables:
+  BaseURL: ""
+  ConnectionString: ""
+  Token: ""
+  UserName: ""
+  Password: ""
+  ClientID: ""
+  ClientSecret: ""
+scripts:
+  - type: http:beforeRequest
+    code: |-
+      if (pm.info.requestName === 'Login') { return; }
+
+      const token = pm.environment.get('Token');
+
+      if (!token || token === 'BLANK') {
+          const options = {
+              url: pm.environment.get('BaseURL') + '/Login',
+              method: 'GET',
+              header: {
+                  'clientId': pm.environment.get('ClientID'),
+                  'clientSecret': pm.environment.get('ClientSecret')
+              }
+          };
+
+          pm.sendRequest(options, function (err, response) {
+              if (err) throw new Error(err);
+              pm.environment.set('Token', response.json().AccessToken);
+          });
+      }
+    language: text/javascript
+  - type: http:afterResponse
+    code: "const json = pm.response.json();\r
+
+      if (json.AccessToken) {\r
+
+      \    pm.variables.set('Token', json.AccessToken);\r
+
+      \    pm.collectionVariables.set('Token', json.AccessToken);\r
+
+      \    pm.environment.set('Token', json.AccessToken);\r
+
+      }"
+    language: text/javascript
+auth:
+  - id: b0a6070f-8f2b-491e-ad72-0cfbbd703706
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{Token}}"

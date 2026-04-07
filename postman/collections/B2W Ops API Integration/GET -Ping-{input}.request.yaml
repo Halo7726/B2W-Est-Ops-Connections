@@ -1,0 +1,9 @@
+$kind: http-request
+name: GET /Ping/{input}
+description: Echo the specified input string along with the host-name and origin
+  (optional) in the format "(host-name) input|origin".
+url: "{{BaseURL}}/Ping/{input}"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 55000

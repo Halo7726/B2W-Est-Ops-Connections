@@ -1,0 +1,17 @@
+$kind: http-request
+name: DELETE /EquipmentType
+description: Delete an entity.
+url: "{{BaseURL}}/EquipmentType"
+method: DELETE
+headers:
+  - key: ConnectionString
+    value: "{{ConnectionString}}"
+  - key: ObjectID
+    value: "{{ObjectID}}"
+    disabled: true
+queryParams:
+  - key: ObjectID
+    value: "{{ObjectID}}"
+    disabled: true
+    description: PK of the entity to delete
+order: 4000

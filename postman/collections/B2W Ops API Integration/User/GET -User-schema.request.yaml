@@ -1,0 +1,8 @@
+$kind: http-request
+name: GET /User/schema
+description: Get the JSON schema associated with a model.
+url: "{{BaseURL}}/User/schema"
+method: GET
+headers:
+  ConnectionString: "{{ConnectionString}}"
+order: 5000
