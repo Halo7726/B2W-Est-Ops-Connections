@@ -1,0 +1,5 @@
+.env
+*.postman_environment.json
+node_modules
+.next
+.vercel
