@@ -4,6 +4,7 @@ Integration layer connecting B2W Trimble (OpsAPI & EstAPI) with Microsoft 365. C
 ## Setup Documentation
 
 - API credentials and project notes: `API_CREDENTIALS.md`
+- OPS API connection documentation: `Ops-Api/OPS_API.md`
 - Postman setup: `postman/SETUP.md`
 - Optional later-phase Vercel setup: `VERCEL_SETUP.md`
 
