@@ -1,0 +1,18 @@
+# Use this workspace to collaborate
+workspace:
+  id: 3ef4fd3d-48c6-41f5-83fd-c9fa2a70e9c1
+
+localResources:
+  specs:
+    - ..\Est-Api\ESTAPI.json
+    - ..\Ops-Api\OpsAPI.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ..\postman\collections\B2W Est API Integration: 53616152-56913e1c-443c-4600-acec-5476af16e5f3
+    ..\postman\collections\B2W Ops API Integration-1: 53616152-6a1556ad-640f-45e7-9dc0-1f53c3441f03
+  environments:
+    ..\postman\environments\B2W Est API.environment.yaml: 53616152-bf614f43-e8ba-44ab-8a4f-f1cd871c2720
+    ..\postman\environments\B2W Ops API.environment.yaml: 53616152-ee4098fb-17e9-44f3-a37c-fdf0dc9e7471
