@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AVAILABLE_COLUMNS, type ColumnKey } from "@/lib/reports/columns";
 
 type DatePreset = "all" | "last7" | "last30" | "thisMonth" | "lastMonth" | "custom";
 
@@ -20,6 +21,8 @@ type ReportRow = {
   targetQuantity: number;
   trackingId: string;
   jobNumber: string;
+  projectManagerId?: string;
+  siteSupervisorEmployeeId?: string;
   crewId: string;
   crewForemanEmployeeId: string;
   crewSize: number | null;
@@ -27,6 +30,14 @@ type ReportRow = {
   notes: string;
   jobSiteDescription: string;
   productionMethod: string;
+  crewWorkType?: string;
+  targetMethod?: string;
+  productionRate?: number | null;
+  unitOfMeasure?: string;
+  originalEstimatedQuantity?: number | null;
+  changeOrderQuantity?: number | null;
+  projectedTotalQuantity?: number | null;
+  description?: string;
 };
 
 type RunResponse = {
@@ -58,19 +69,48 @@ export default function SimpleReportBuilder() {
   const [preset, setPreset] = useState<DatePreset>("all");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [selectedColumns, setSelectedColumns] = useState<ColumnKey[]>(["date", "targetQuantity", "crewId", "crewForemanEmployeeId", "crewSize", "duration", "jobSiteDescription", "notes"]);
 
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [fullSyncing, setFullSyncing] = useState(false);
   const [autoSeeding, setAutoSeeding] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<RunResponse | null>(null);
+  const [showColumnPicker, setShowColumnPicker] = useState(false);
 
   // Track the latest run request to discard stale responses when selections change quickly
   const runSeqRef = useRef(0);
 
   const canRun = Boolean(jobNumber && trackingId);
   const canExport = Boolean(result && result.rows.length > 0);
+
+  function moveSelectedColumn(index: number, direction: "up" | "down") {
+    setSelectedColumns((prev) => {
+      const next = [...prev];
+      const target = direction === "up" ? index - 1 : index + 1;
+      if (target < 0 || target >= next.length) return prev;
+      const temp = next[index];
+      next[index] = next[target];
+      next[target] = temp;
+      return next;
+    });
+  }
+
+  function reorderSelectedColumns(sourceKey: ColumnKey, targetKey: ColumnKey) {
+    if (sourceKey === targetKey) return;
+    setSelectedColumns((prev) => {
+      const sourceIndex = prev.indexOf(sourceKey);
+      const targetIndex = prev.indexOf(targetKey);
+      if (sourceIndex < 0 || targetIndex < 0) return prev;
+
+      const next = [...prev];
+      const [moved] = next.splice(sourceIndex, 1);
+      next.splice(targetIndex, 0, moved);
+      return next;
+    });
+  }
 
   async function loadJobs(skipAutoSeed = false) {
     setLoadingOptions(true);
@@ -147,15 +187,26 @@ export default function SimpleReportBuilder() {
     setAutoSeeding(true);
     setError(null);
     try {
-      // Fetch both the accounts definition AND the production history so the report has data
-      for (const entity of ["JobProductionAccount", "JobProductionTarget"] as const) {
+      // Fetch account and fallback entities; tolerate unmapped endpoints.
+      const entities = [
+        "JobProductionAccount",
+        "JobProductionTarget",
+        "JobEstimateItem",
+        "JobCostBreakdownElement",
+        "JobProjectManager",
+        "JobSite",
+        "Employee",
+      ] as const;
+      for (const entity of entities) {
         const res = await fetch("/api/ops/sync", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ entity, jobNumber: job, top: 2000 }),
         });
         const data = (await res.json()) as { ok: boolean; error?: string };
-        if (!res.ok || !data.ok) throw new Error(data.error ?? `Auto-sync of ${entity} failed`);
+        if ((!res.ok || !data.ok) && entity === "JobProductionAccount") {
+          throw new Error(data.error ?? `Auto-sync of ${entity} failed`);
+        }
       }
       await loadAccounts(job, true);
     } catch (err) {
@@ -179,16 +230,26 @@ export default function SimpleReportBuilder() {
       const jobData = (await jobRes.json()) as { ok: boolean; error?: string };
       if (!jobRes.ok || !jobData.ok) throw new Error(jobData.error ?? "Sync failed for Job");
 
-      // Refresh production data for the selected job
-      const entities = ["JobProductionTarget", "JobProductionAccount"];
+      // Refresh production and fallback data for the selected job.
+      const entities = [
+        "JobProductionTarget",
+        "JobProductionAccount",
+        "JobEstimateItem",
+        "JobCostBreakdownElement",
+        "JobProjectManager",
+        "JobSite",
+        "Employee",
+      ];
       for (const entity of entities) {
         const res = await fetch("/api/ops/sync", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ entity, jobNumber, top: 1000 }),
+          body: JSON.stringify({ entity, jobNumber, top: 5000 }),
         });
         const data = (await res.json()) as { ok: boolean; error?: string };
-        if (!res.ok || !data.ok) throw new Error(data.error ?? `Sync failed for ${entity}`);
+        if ((!res.ok || !data.ok) && entity === "JobProductionAccount") {
+          throw new Error(data.error ?? `Sync failed for ${entity}`);
+        }
       }
       await loadJobs(true);
       await loadAccounts(jobNumber);
@@ -196,6 +257,40 @@ export default function SimpleReportBuilder() {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setSyncing(false);
+    }
+  }
+
+  async function fullSyncJob() {
+    if (!jobNumber) return;
+    setFullSyncing(true);
+    setError(null);
+    try {
+      // Sync all production items for this job (no filtering by tracking ID)
+      const entities = [
+        "JobProductionTarget",
+        "JobProductionAccount",
+        "JobEstimateItem",
+        "JobCostBreakdownElement",
+        "JobProjectManager",
+        "JobSite",
+        "Employee",
+      ];
+      for (const entity of entities) {
+        const res = await fetch("/api/ops/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ entity, jobNumber, top: 10000 }),
+        });
+        const data = (await res.json()) as { ok: boolean; error?: string };
+        if ((!res.ok || !data.ok) && entity === "JobProductionAccount") {
+          throw new Error(data.error ?? `Full sync failed for ${entity}`);
+        }
+      }
+      await loadAccounts(jobNumber);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setFullSyncing(false);
     }
   }
 
@@ -217,6 +312,7 @@ export default function SimpleReportBuilder() {
             preset,
             startDate: preset === "custom" ? startDate : undefined,
             endDate: preset === "custom" ? endDate : undefined,
+            selectedColumns,
           }),
         });
 
@@ -234,7 +330,7 @@ export default function SimpleReportBuilder() {
         }
       }
     },
-    [jobNumber, trackingId, preset, startDate, endDate]
+    [jobNumber, trackingId, preset, startDate, endDate, selectedColumns]
   );
 
   useEffect(() => {
@@ -258,7 +354,7 @@ export default function SimpleReportBuilder() {
       void runReport();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- runReport recreates whenever these same deps change
-  }, [trackingId, preset, startDate, endDate]);
+  }, [trackingId, preset, startDate, endDate, selectedColumns]);
 
   const pdfUrl = useMemo(() => {
     if (!jobNumber || !trackingId) return "#";
@@ -391,7 +487,15 @@ export default function SimpleReportBuilder() {
             disabled={!jobNumber || syncing}
             className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-60"
           >
-            {syncing ? "Syncing..." : "Refresh from OPS"}
+            {syncing ? "Syncing..." : "Refresh Selected"}
+          </button>
+          <button
+            onClick={fullSyncJob}
+            disabled={!jobNumber || fullSyncing}
+            title="Pull all production items for this job from OPS"
+            className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 hover:bg-amber-100 disabled:opacity-60"
+          >
+            {fullSyncing ? "Syncing All..." : "Sync All Job Items"}
           </button>
           <button
             onClick={() => void runReport()}
@@ -453,13 +557,112 @@ export default function SimpleReportBuilder() {
       )}
 
       <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">
-          Production History
-          {running && <span className="ml-2 text-sm font-normal text-slate-500">Loading…</span>}
-        </h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Range: {rangeDisplay} | Preset: {presetLabel(preset)}
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">
+              Production History
+              {running && <span className="ml-2 text-sm font-normal text-slate-500">Loading…</span>}
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Range: {rangeDisplay} | Preset: {presetLabel(preset)}
+            </p>
+          </div>
+          <button
+            onClick={() => setShowColumnPicker(!showColumnPicker)}
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 no-print"
+          >
+            {showColumnPicker ? "Hide" : "Customize"} Columns ({selectedColumns.length})
+          </button>
+        </div>
+
+        {showColumnPicker && (
+          <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <p className="mb-3 text-sm font-medium text-slate-900">Select columns to display:</p>
+            <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+              {AVAILABLE_COLUMNS.map((col) => (
+                <label key={col.key} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedColumns.includes(col.key)}
+                    onChange={(e) =>
+                      setSelectedColumns(
+                        e.target.checked
+                          ? [...selectedColumns, col.key]
+                          : selectedColumns.filter((k) => k !== col.key)
+                      )
+                    }
+                    className="rounded border-slate-300"
+                  />
+                  <span className="text-sm text-slate-700">{col.label}</span>
+                </label>
+              ))}
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button
+                onClick={() => setSelectedColumns(["date", "targetQuantity", "crewId", "crewForemanEmployeeId", "crewSize", "duration", "jobSiteDescription", "notes"])}
+                className="rounded-md border border-slate-300 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+              >
+                Reset to Default
+              </button>
+              <button
+                onClick={() => setSelectedColumns(AVAILABLE_COLUMNS.map((c) => c.key))}
+                className="rounded-md border border-slate-300 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+              >
+                Select All
+              </button>
+            </div>
+
+            <div className="mt-4 rounded-md border border-slate-200 bg-white p-3">
+              <p className="mb-2 text-sm font-medium text-slate-900">Column order (drag to reorder)</p>
+              <div className="space-y-1">
+                {selectedColumns.map((key, idx) => {
+                  const meta = AVAILABLE_COLUMNS.find((c) => c.key === key);
+                  if (!meta) return null;
+                  return (
+                    <div
+                      key={key}
+                      draggable
+                      onDragStart={(event) => {
+                        event.dataTransfer.setData("text/column-key", key);
+                        event.dataTransfer.effectAllowed = "move";
+                      }}
+                      onDragOver={(event) => {
+                        event.preventDefault();
+                        event.dataTransfer.dropEffect = "move";
+                      }}
+                      onDrop={(event) => {
+                        event.preventDefault();
+                        const sourceKey = event.dataTransfer.getData("text/column-key") as ColumnKey;
+                        if (sourceKey) reorderSelectedColumns(sourceKey, key);
+                      }}
+                      className="flex cursor-move items-center justify-between rounded border border-slate-200 px-2 py-1"
+                    >
+                      <span className="text-sm text-slate-700">{idx + 1}. {meta.label}</span>
+                      <div className="flex gap-1">
+                        <button
+                          type="button"
+                          onClick={() => moveSelectedColumn(idx, "up")}
+                          disabled={idx === 0}
+                          className="rounded border border-slate-300 px-2 py-0.5 text-xs text-slate-700 disabled:opacity-40"
+                        >
+                          Up
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveSelectedColumn(idx, "down")}
+                          disabled={idx === selectedColumns.length - 1}
+                          className="rounded border border-slate-300 px-2 py-0.5 text-xs text-slate-700 disabled:opacity-40"
+                        >
+                          Down
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <article className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs uppercase tracking-wide text-slate-500">Total Quantity</p>
@@ -481,36 +684,37 @@ export default function SimpleReportBuilder() {
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr className="bg-slate-50 text-left text-slate-600">
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Date</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Target Qty</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Crew ID</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Foreman ID</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Crew Size</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Duration (hrs)</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Site</th>
-                <th className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">Notes</th>
+                {selectedColumns
+                  .map((key) => AVAILABLE_COLUMNS.find((col) => col.key === key))
+                  .filter((col): col is (typeof AVAILABLE_COLUMNS)[number] => Boolean(col))
+                  .map((col) => (
+                  <th key={col.key} className="border-b border-slate-200 px-3 py-2 font-medium whitespace-nowrap">
+                    {col.label}
+                  </th>
+                  ))}
               </tr>
             </thead>
             <tbody>
               {(result?.rows ?? []).map((row, idx) => (
                 <tr key={idx} className="odd:bg-white even:bg-slate-50/50">
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700 whitespace-nowrap">{row.date}</td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.targetQuantity.toFixed(2)}</td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.crewId || "—"}</td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.crewForemanEmployeeId || "—"}</td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.crewSize ?? "—"}</td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">
-                    {row.duration != null ? row.duration.toFixed(1) : "—"}
-                  </td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{row.jobSiteDescription || "—"}</td>
-                  <td className="border-b border-slate-100 px-3 py-2 text-slate-700 max-w-xs truncate" title={row.notes}>
-                    {row.notes || "—"}
-                  </td>
+                  {selectedColumns
+                    .map((key) => AVAILABLE_COLUMNS.find((col) => col.key === key))
+                    .filter((col): col is (typeof AVAILABLE_COLUMNS)[number] => Boolean(col))
+                    .map((col) => (
+                    <td key={col.key} className="border-b border-slate-100 px-3 py-2 text-slate-700 whitespace-nowrap">
+                      {(() => {
+                        const val = row[col.key];
+                        if (val === null || val === undefined) return "—";
+                        if (col.type === "number" && typeof val === "number") return val.toFixed(2);
+                        return String(val);
+                      })()}
+                    </td>
+                    ))}
                 </tr>
               ))}
               {(result?.rows.length ?? 0) === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-3 py-6 text-center text-slate-500">
+                  <td colSpan={selectedColumns.length} className="px-3 py-6 text-center text-slate-500">
                     {running ? "Loading..." : "No data yet. Select a tracking account above."}
                   </td>
                 </tr>

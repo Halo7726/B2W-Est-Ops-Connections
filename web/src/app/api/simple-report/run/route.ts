@@ -10,6 +10,7 @@ const requestSchema = z.object({
   preset: z.enum(["all", "last7", "last30", "thisMonth", "lastMonth", "custom"]),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
+  selectedColumns: z.array(z.string()).optional(),
 });
 
 export async function POST(request: NextRequest) {
