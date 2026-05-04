@@ -15,6 +15,9 @@ export default function Home() {
           <a href="/reports/new" className="rounded-md border border-slate-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
             Open Advanced Builder
           </a>
+          <a href="/est" className="rounded-md border border-cyan-300 bg-cyan-50 px-4 py-2 text-sm font-medium text-cyan-800 hover:bg-cyan-100">
+            Open Est Resource Editor
+          </a>
         </div>
       </section>
 

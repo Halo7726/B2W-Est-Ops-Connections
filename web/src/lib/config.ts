@@ -11,6 +11,11 @@ const envSchema = z.object({
   OPS_PASSWORD: z.string().min(1, "OPS_PASSWORD is required"),
   OPS_CLIENT_ID: z.string().optional(),
   OPS_CLIENT_SECRET: z.string().optional(),
+  EST_BASE_URL: z.string().min(1, "EST_BASE_URL is required"),
+  EST_USERNAME: z.string().min(1, "EST_USERNAME is required"),
+  EST_PASSWORD: z.string().min(1, "EST_PASSWORD is required"),
+  EST_CLIENT_ID: z.string().optional(),
+  EST_CLIENT_SECRET: z.string().optional(),
 });
 
 export type AppConfig = {
@@ -23,6 +28,13 @@ export type AppConfig = {
   ops: {
     baseUrl: string;
     connectionString: string;
+    username: string;
+    password: string;
+    clientId?: string;
+    clientSecret?: string;
+  };
+  est: {
+    baseUrl: string;
     username: string;
     password: string;
     clientId?: string;
@@ -62,6 +74,13 @@ export function getConfig(): AppConfig {
       password: parsed.OPS_PASSWORD,
       clientId: parsed.OPS_CLIENT_ID,
       clientSecret: parsed.OPS_CLIENT_SECRET,
+    },
+    est: {
+      baseUrl: parsed.EST_BASE_URL,
+      username: parsed.EST_USERNAME,
+      password: parsed.EST_PASSWORD,
+      clientId: parsed.EST_CLIENT_ID,
+      clientSecret: parsed.EST_CLIENT_SECRET,
     },
   };
 }
