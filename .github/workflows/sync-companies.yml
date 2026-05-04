@@ -1,0 +1,33 @@
+name: Sync B2W Companies to SharePoint
+
+on:
+  schedule:
+    - cron: '0 10 * * 1-5'  # 10:00 UTC = 6:00 AM ET, weekdays only
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Run company sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run sync script
+        run: node sync/sync-companies.js
+        env:
+          EST_API_BASE_URL: ${{ secrets.EST_API_BASE_URL }}
+          EST_API_USERNAME: ${{ secrets.EST_API_USERNAME }}
+          EST_API_PASSWORD: ${{ secrets.EST_API_PASSWORD }}
+          EST_API_CLIENT_ID: ${{ secrets.EST_API_CLIENT_ID }}
+          EST_API_CLIENT_SECRET: ${{ secrets.EST_API_CLIENT_SECRET }}
+          EST_API_CONNECTION_STRING: ${{ secrets.EST_API_CONNECTION_STRING }}
+          GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
+          GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
+          GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
+          SP_SITE_ID: ${{ secrets.SP_SITE_ID }}
+          SP_LIST_ID: ${{ secrets.SP_LIST_ID }}
