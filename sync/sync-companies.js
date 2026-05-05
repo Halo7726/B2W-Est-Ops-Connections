@@ -163,7 +163,8 @@ async function getGraphToken() {
   );
 
   if (!res.ok) {
-    throw new Error(`Graph token request failed: ${res.status} ${res.statusText}`);
+    const body = await res.text();
+    throw new Error(`Graph token request failed: ${res.status} ${res.statusText}\n${body}`);
   }
 
   const data = await res.json();
