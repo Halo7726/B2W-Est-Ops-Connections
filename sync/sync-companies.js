@@ -88,33 +88,20 @@ function estHeaders(token) {
   };
 }
 
-// Fetches all pages for one org-type endpoint. Returns array of Items.
+// Fetches all records for one org-type endpoint in a single request.
 // A 404 means no records of that type exist — treated as empty, not an error.
 async function fetchOrgType(token, segment) {
-  const headers = estHeaders(token);
-  const items = [];
-  let skip = 0;
+  const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}`;
+  const res = await fetch(url, { headers: estHeaders(token) });
 
-  while (true) {
-    const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}?$skip=${skip}&$top=100`;
-    const res = await fetch(url, { headers });
+  if (res.status === 404) return [];
 
-    if (res.status === 404) break;
-
-    if (!res.ok) {
-      throw new Error(`EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}`);
-    }
-
-    const data = await res.json();
-    const page = data.Items ?? [];
-    items.push(...page);
-
-    // Fewer than 100 results means we've reached the last page
-    if (page.length < 100) break;
-    skip += 100;
+  if (!res.ok) {
+    throw new Error(`EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}`);
   }
 
-  return items;
+  const data = await res.json();
+  return data.Items ?? [];
 }
 
 // Collects all org types and merges records sharing an ObjectID into one entry
