@@ -80,11 +80,12 @@ async function getEstToken() {
 }
 
 function estHeaders(token) {
+  // Postman pre-request script only adds ClientID and ClientSecret on subsequent
+  // requests — ConnectionString is login-only and causes 500 if sent elsewhere.
   return {
     Authorization: `Bearer ${token}`,
     ClientID: EST_CLIENT_ID,
     ClientSecret: EST_CLIENT_SECRET,
-    ConnectionString: EST_CONNECTION_STRING,
   };
 }
 
