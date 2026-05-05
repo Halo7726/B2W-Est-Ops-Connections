@@ -98,7 +98,8 @@ async function fetchOrgType(token, segment) {
   if (res.status === 404) return [];
 
   if (!res.ok) {
-    throw new Error(`EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}`);
+    const body = await res.text();
+    throw new Error(`EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}\n${body}`);
   }
 
   const data = await res.json();
