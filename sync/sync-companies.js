@@ -57,17 +57,14 @@ const SP_ITEMS_URL = `https://graph.microsoft.com/v1.0/sites/${SP_ESTIMATING_OPE
 // B2W EstAPI helpers
 // ---------------------------------------------------------------------------
 
-// The EstAPI requires ALL of ClientID, ClientSecret, and ConnectionString on
-// every request (including /Login). Credentials go in headers, not the body.
+// Login uses GET with only userName and password headers.
+// ClientID/ClientSecret/ConnectionString are added to all subsequent requests only.
 async function getEstToken() {
   const res = await fetch(`${EST_API_BASE_URL}/Login`, {
-    method: 'POST',
+    method: 'GET',
     headers: {
-      userName: EST_USERNAME,       // camelCase with capital N — confirmed working
+      userName: EST_USERNAME,   // camelCase with capital N — confirmed working
       password: EST_PASSWORD,
-      ClientID: EST_CLIENT_ID,
-      ClientSecret: EST_CLIENT_SECRET,
-      ConnectionString: EST_CONNECTION_STRING,
     },
   });
 
