@@ -21,13 +21,13 @@ jobs:
         run: node sync/sync-companies.js
         env:
           EST_API_BASE_URL: ${{ secrets.EST_API_BASE_URL }}
-          EST_API_USERNAME: ${{ secrets.EST_USERNAME }}
-          EST_API_PASSWORD: ${{ secrets.EST_PASSWORD }}
-          EST_API_CLIENT_ID: ${{ secrets.EST_CLIENT_ID }}
-          EST_API_CLIENT_SECRET: ${{ secrets.EST_CLIENT_SECRET }}
-          EST_API_CONNECTION_STRING: ${{ secrets.EST_CONNECTION_STRING }}
+          EST_USERNAME: ${{ secrets.EST_USERNAME }}
+          EST_PASSWORD: ${{ secrets.EST_PASSWORD }}
+          EST_CLIENT_ID: ${{ secrets.EST_CLIENT_ID }}
+          EST_CLIENT_SECRET: ${{ secrets.EST_CLIENT_SECRET }}
+          EST_CONNECTION_STRING: ${{ secrets.EST_CONNECTION_STRING }}
           GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
           GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
           GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
-          SP_SITE_ID: ${{ secrets.SP_ESTIMATING_OPERATIONS_ID }}
-          SP_LIST_ID: ${{ secrets.SP_COMPANY_DATA_LIST_ID }}
+          SP_ESTIMATING_OPERATIONS_ID: ${{ secrets.SP_ESTIMATING_OPERATIONS_ID }}
+          SP_COMPANY_DATA_LIST_ID: ${{ secrets.SP_COMPANY_DATA_LIST_ID }}

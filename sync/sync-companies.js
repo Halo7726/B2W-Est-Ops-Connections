@@ -10,16 +10,16 @@
 
 const REQUIRED_VARS = [
   'EST_API_BASE_URL',
-  'EST_API_USERNAME',
-  'EST_API_PASSWORD',
-  'EST_API_CLIENT_ID',
-  'EST_API_CLIENT_SECRET',
-  'EST_API_CONNECTION_STRING',
+  'EST_USERNAME',
+  'EST_PASSWORD',
+  'EST_CLIENT_ID',
+  'EST_CLIENT_SECRET',
+  'EST_CONNECTION_STRING',
   'GRAPH_TENANT_ID',
   'GRAPH_CLIENT_ID',
   'GRAPH_CLIENT_SECRET',
-  'SP_SITE_ID',
-  'SP_LIST_ID',
+  'SP_ESTIMATING_OPERATIONS_ID',
+  'SP_COMPANY_DATA_LIST_ID',
 ];
 
 const missing = REQUIRED_VARS.filter((v) => !process.env[v]);
@@ -30,16 +30,16 @@ if (missing.length > 0) {
 
 const {
   EST_API_BASE_URL,
-  EST_API_USERNAME,
-  EST_API_PASSWORD,
-  EST_API_CLIENT_ID,
-  EST_API_CLIENT_SECRET,
-  EST_API_CONNECTION_STRING,
+  EST_USERNAME,
+  EST_PASSWORD,
+  EST_CLIENT_ID,
+  EST_CLIENT_SECRET,
+  EST_CONNECTION_STRING,
   GRAPH_TENANT_ID,
   GRAPH_CLIENT_ID,
   GRAPH_CLIENT_SECRET,
-  SP_SITE_ID,
-  SP_LIST_ID,
+  SP_ESTIMATING_OPERATIONS_ID,
+  SP_COMPANY_DATA_LIST_ID,
 } = process.env;
 
 // Endpoint segment → SharePoint Company_x0020_Type display value
@@ -51,7 +51,7 @@ const ORG_TYPES = [
   { segment: 'EngineerArchitect', label: 'Engineer/Architect' },
 ];
 
-const SP_ITEMS_URL = `https://graph.microsoft.com/v1.0/sites/${SP_SITE_ID}/lists/${SP_LIST_ID}/items`;
+const SP_ITEMS_URL = `https://graph.microsoft.com/v1.0/sites/${SP_ESTIMATING_OPERATIONS_ID}/lists/${SP_COMPANY_DATA_LIST_ID}/items`;
 
 // ---------------------------------------------------------------------------
 // B2W EstAPI helpers
@@ -63,11 +63,11 @@ async function getEstToken() {
   const res = await fetch(`${EST_API_BASE_URL}/Login`, {
     method: 'POST',
     headers: {
-      userName: EST_API_USERNAME,       // camelCase with capital N — confirmed working
-      password: EST_API_PASSWORD,
-      ClientID: EST_API_CLIENT_ID,
-      ClientSecret: EST_API_CLIENT_SECRET,
-      ConnectionString: EST_API_CONNECTION_STRING,
+      userName: EST_USERNAME,       // camelCase with capital N — confirmed working
+      password: EST_PASSWORD,
+      ClientID: EST_CLIENT_ID,
+      ClientSecret: EST_CLIENT_SECRET,
+      ConnectionString: EST_CONNECTION_STRING,
     },
   });
 
@@ -85,9 +85,9 @@ async function getEstToken() {
 function estHeaders(token) {
   return {
     Authorization: `Bearer ${token}`,
-    ClientID: EST_API_CLIENT_ID,
-    ClientSecret: EST_API_CLIENT_SECRET,
-    ConnectionString: EST_API_CONNECTION_STRING,
+    ClientID: EST_CLIENT_ID,
+    ClientSecret: EST_CLIENT_SECRET,
+    ConnectionString: EST_CONNECTION_STRING,
   };
 }
 
