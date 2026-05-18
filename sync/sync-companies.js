@@ -94,20 +94,22 @@ function estHeaders(token) {
   };
 }
 
-// Fetches all records for one org-type endpoint in a single request.
-// A 404 means no records of that type exist — treated as empty, not an error.
-// 5xx responses are retried up to MAX_RETRIES times (transient DB/SSL timeouts on B2W side).
-// If all retries fail, logs a warning and returns [] so the rest of the sync continues.
+// Fetches all records for one org-type endpoint, paginating with $top/$skip
+// until a short page signals the end. A 404 means no records — not an error.
+// 5xx responses are retried up to MAX_RETRIES times per page (transient DB/SSL
+// timeouts on B2W's side). If all retries fail, throws so the caller can decide
+// whether to skip the whole segment or abort.
 const MAX_RETRIES = 3;
 const RETRY_BASE_MS = 5000; // 5s, 15s, 45s
+const PAGE_SIZE = 500;
 
-async function fetchOrgType(token, segment) {
-  const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}`;
+async function fetchOrgTypePage(token, segment, skip) {
+  const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}?$top=${PAGE_SIZE}&$skip=${skip}`;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     const res = await fetch(url, { headers: estHeaders(token) });
 
-    if (res.status === 404) return [];
+    if (res.status === 404) return null; // signal: endpoint doesn't exist
 
     if (res.ok) {
       const data = await res.json();
@@ -115,9 +117,7 @@ async function fetchOrgType(token, segment) {
     }
 
     const body = await res.text();
-    const isRetryable = res.status >= 500;
-
-    if (!isRetryable || attempt === MAX_RETRIES) {
+    if (res.status < 500 || attempt === MAX_RETRIES) {
       throw new Error(
         `EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}\n${body}`
       );
@@ -129,6 +129,22 @@ async function fetchOrgType(token, segment) {
     );
     await new Promise((r) => setTimeout(r, delay));
   }
+}
+
+async function fetchOrgType(token, segment) {
+  const all = [];
+  let skip = 0;
+
+  while (true) {
+    const page = await fetchOrgTypePage(token, segment, skip);
+    if (page === null) return []; // 404 — no records of this type
+    all.push(...page);
+    if (page.length < PAGE_SIZE) break; // last page
+    skip += PAGE_SIZE;
+    if (skip > 100_000) throw new Error(`${segment}: pagination safety limit reached`);
+  }
+
+  return all;
 }
 
 const ZERO_GUID = '00000000-0000-0000-0000-000000000000';
@@ -215,20 +231,38 @@ async function fetchAllOrgs(token) {
 // Fetches all contacts for one org-type segment and returns a Map keyed by
 // OrganizationREF (the org's ObjectID) → [contact, ...] sorted default-first.
 // The endpoint pattern is the same as orgs with /Contact appended.
-async function fetchContactsForSegment(token, segment) {
-  const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}/Contact`;
-  const res = await fetch(url, { headers: estHeaders(token) });
+// Contacts live in a single table regardless of org type. Fetches all pages
+// from /Resource/Organization/Contact and returns Map<OrganizationREF, [c1, c2]>
+// where c1 is the default contact and c2 is the secondary (max 2 per company).
+// Run --discover if this 404s to find the correct endpoint path.
+async function fetchAllContacts(token) {
+  const contactsEndpoint = `${EST_API_BASE_URL}/Resource/Organization/Contact`;
+  const items = [];
+  let skip = 0;
 
-  if (res.status === 404) return new Map();
-  if (!res.ok) {
-    const body = await res.text();
-    console.warn(`  [${segment}/Contact] ${res.status} — skipping contacts for this type\n  ${body}`);
-    return new Map();
+  while (true) {
+    const url = `${contactsEndpoint}?$top=${PAGE_SIZE}&$skip=${skip}`;
+    const res = await fetch(url, { headers: estHeaders(token) });
+
+    if (res.status === 404) {
+      console.warn('  Contacts endpoint returned 404 — run --discover to find the correct URL');
+      return new Map();
+    }
+    if (!res.ok) {
+      const body = await res.text();
+      console.warn(`  Contacts fetch failed ${res.status} — skipping contacts\n  ${body}`);
+      return new Map();
+    }
+
+    const data = await res.json();
+    const page = data.Items ?? [];
+    items.push(...page);
+    if (page.length < PAGE_SIZE) break;
+    skip += PAGE_SIZE;
+    if (skip > 100_000) throw new Error('Contacts: pagination safety limit reached');
   }
 
-  const data = await res.json();
-  const items = data.Items ?? [];
-
+  // Group by OrganizationREF, default contact first, max 2
   const byOrgRef = new Map();
   for (const c of items) {
     if (!c.OrganizationREF) continue;
@@ -237,37 +271,9 @@ async function fetchContactsForSegment(token, segment) {
     byOrgRef.set(c.OrganizationREF, list);
   }
 
-  // Sort so IsDefaultContact comes first
-  for (const list of byOrgRef.values()) {
-    list.sort((a, b) => (b.IsDefaultContact ? 1 : 0) - (a.IsDefaultContact ? 1 : 0));
-  }
-
-  return byOrgRef;
-}
-
-// Fetches contacts across all org-type segments and merges into one Map
-// keyed by OrganizationREF. A contact seen via multiple segments is deduplicated
-// by ObjectID so it isn't listed twice on the same company row.
-async function fetchAllContacts(token) {
-  const merged = new Map(); // OrganizationREF → Map<contactObjectID, contact>
-
-  for (const { segment } of ORG_TYPES) {
-    const segmentMap = await fetchContactsForSegment(token, segment);
-    for (const [orgRef, contacts] of segmentMap) {
-      if (!merged.has(orgRef)) merged.set(orgRef, new Map());
-      const seen = merged.get(orgRef);
-      for (const c of contacts) {
-        if (!seen.has(c.ObjectID)) seen.set(c.ObjectID, c);
-      }
-    }
-  }
-
-  // Flatten inner Map → sorted array (default contact first, max 2)
   const result = new Map();
-  for (const [orgRef, contactMap] of merged) {
-    const sorted = [...contactMap.values()].sort(
-      (a, b) => (b.IsDefaultContact ? 1 : 0) - (a.IsDefaultContact ? 1 : 0)
-    );
+  for (const [orgRef, list] of byOrgRef) {
+    const sorted = list.sort((a, b) => (b.IsDefaultContact ? 1 : 0) - (a.IsDefaultContact ? 1 : 0));
     result.set(orgRef, sorted.slice(0, 2));
   }
   return result;
@@ -466,53 +472,44 @@ async function discover() {
   console.log('--- DISCOVER MODE: showing raw API fields (no SharePoint writes) ---\n');
   const token = await getEstToken();
 
+  // --- Org type endpoints ---
   for (const { segment } of ORG_TYPES) {
-    const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}`;
+    const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}?$top=5`;
     const res = await fetch(url, { headers: estHeaders(token) });
-    if (res.status === 404) { console.log(`${segment}: (no records)`); continue; }
+    if (res.status === 404) { console.log(`${segment}: (404 — no records or wrong path)`); continue; }
     if (!res.ok) { console.log(`${segment}: ERROR ${res.status}`); continue; }
 
     const data = await res.json();
     const items = data.Items ?? [];
-    console.log(`=== ${segment} — ${items.length} rows total ===`);
-
-    if (items.length === 0) continue;
-
-    // Show all field keys available
-    const allKeys = [...new Set(items.flatMap(Object.keys))];
-    console.log('Fields available:', allKeys);
-
-    // Group rows by Name to show how many rows per company
-    const byName = new Map();
-    for (const item of items) {
-      const n = item.Name ?? '(no name)';
-      byName.set(n, (byName.get(n) ?? 0) + 1);
+    console.log(`=== ${segment} — sample ${items.length} rows ===`);
+    if (items.length > 0) {
+      console.log('Fields:', [...new Set(items.flatMap(Object.keys))]);
+      console.log('First record:', JSON.stringify(items[0], null, 2));
     }
-    const dupes = [...byName.entries()].filter(([, count]) => count > 1);
-    console.log(`Unique companies: ${byName.size} | Companies with multiple rows: ${dupes.length}`);
-    if (dupes.length > 0) {
-      console.log('  Dupe examples:', dupes.slice(0, 5).map(([n, c]) => `"${n}" x${c}`).join(', '));
-    }
+    console.log();
+  }
 
-    // Dump first 2 raw records so we can see all fields
-    console.log('\nFirst 2 raw records:');
-    console.log(JSON.stringify(items.slice(0, 2), null, 2));
-
-    // Try the contacts sub-endpoint
-    const contactUrl = `${EST_API_BASE_URL}/Resource/Organization/${segment}/Contact`;
-    const cr = await fetch(contactUrl, { headers: estHeaders(token) });
+  // --- Single contacts table ---
+  console.log('=== Contacts (single table) ===');
+  const candidates = [
+    `${EST_API_BASE_URL}/Resource/Organization/Contact`,
+    `${EST_API_BASE_URL}/Resource/Contact`,
+  ];
+  for (const contactUrl of candidates) {
+    const cr = await fetch(`${contactUrl}?$top=5`, { headers: estHeaders(token) });
     if (cr.ok) {
       const cd = await cr.json();
       const contacts = cd.Items ?? [];
-      console.log(`\n${segment}/Contact — ${contacts.length} total contacts`);
+      console.log(`✓ Found at: ${contactUrl}`);
+      console.log(`  ${contacts.length} sample records`);
       if (contacts.length > 0) {
-        console.log('Contact fields:', [...new Set(contacts.flatMap(Object.keys))]);
-        console.log('First 2 contacts:', JSON.stringify(contacts.slice(0, 2), null, 2));
+        console.log('  Fields:', [...new Set(contacts.flatMap(Object.keys))]);
+        console.log('  First record:', JSON.stringify(contacts[0], null, 2));
       }
+      break;
     } else {
-      console.log(`\n${segment}/Contact — ${cr.status} (endpoint may not exist or be named differently)`);
+      console.log(`✗ ${contactUrl} — ${cr.status}`);
     }
-    console.log();
   }
 }
 
