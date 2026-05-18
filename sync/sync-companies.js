@@ -91,19 +91,39 @@ function estHeaders(token) {
 
 // Fetches all records for one org-type endpoint in a single request.
 // A 404 means no records of that type exist — treated as empty, not an error.
+// 5xx responses are retried up to MAX_RETRIES times (transient DB/SSL timeouts on B2W side).
+// If all retries fail, logs a warning and returns [] so the rest of the sync continues.
+const MAX_RETRIES = 3;
+const RETRY_BASE_MS = 5000; // 5s, 15s, 45s
+
 async function fetchOrgType(token, segment) {
   const url = `${EST_API_BASE_URL}/Resource/Organization/${segment}`;
-  const res = await fetch(url, { headers: estHeaders(token) });
 
-  if (res.status === 404) return [];
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    const res = await fetch(url, { headers: estHeaders(token) });
 
-  if (!res.ok) {
+    if (res.status === 404) return [];
+
+    if (res.ok) {
+      const data = await res.json();
+      return data.Items ?? [];
+    }
+
     const body = await res.text();
-    throw new Error(`EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}\n${body}`);
-  }
+    const isRetryable = res.status >= 500;
 
-  const data = await res.json();
-  return data.Items ?? [];
+    if (!isRetryable || attempt === MAX_RETRIES) {
+      throw new Error(
+        `EstAPI GET /Resource/Organization/${segment} failed: ${res.status} ${res.statusText}\n${body}`
+      );
+    }
+
+    const delay = RETRY_BASE_MS * attempt;
+    console.warn(
+      `  [${segment}] attempt ${attempt}/${MAX_RETRIES} got ${res.status} — retrying in ${delay / 1000}s...`
+    );
+    await new Promise((r) => setTimeout(r, delay));
+  }
 }
 
 // Collects all org types and merges records sharing an ObjectID into one entry
@@ -113,7 +133,14 @@ async function fetchAllOrgs(token) {
   const byObjectID = new Map(); // ObjectID → { fields, types: Set }
 
   for (const { segment, label } of ORG_TYPES) {
-    const items = await fetchOrgType(token, segment);
+    let items;
+    try {
+      items = await fetchOrgType(token, segment);
+    } catch (err) {
+      console.error(`  [${segment}] all retries failed — skipping segment: ${err.message}`);
+      items = [];
+      skippedSegments++;
+    }
     console.log(`  ${segment}: ${items.length} records`);
 
     for (const item of items) {
@@ -273,6 +300,7 @@ async function main() {
   let created = 0;
   let updated = 0;
   let errors = 0;
+  let skippedSegments = 0;
 
   console.log('--- Fetching B2W EstAPI token ---');
   const estToken = await getEstToken();
@@ -300,9 +328,12 @@ async function main() {
     }
   }
 
-  console.log(`\nSync complete. Created: ${created} | Updated: ${updated} | Errors: ${errors}`);
+  console.log(
+    `\nSync complete. Created: ${created} | Updated: ${updated} | Errors: ${errors}` +
+    (skippedSegments > 0 ? ` | Skipped segments: ${skippedSegments}` : '')
+  );
 
-  if (errors > 0) process.exit(1);
+  if (errors > 0 || skippedSegments > 0) process.exit(1);
 }
 
 main().catch((err) => {
