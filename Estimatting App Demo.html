@@ -96,6 +96,33 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text);
 /* PROJECT CARD */
 .p-card{background:var(--white);border:1px solid var(--card-border);border-radius:8px;padding:14px;cursor:pointer;transition:all 0.12s;position:relative}
 .p-card:hover{border-color:#a0aec0;box-shadow:0 2px 8px rgba(0,0,0,0.08);transform:translateY(-1px)}
+.p-card.urg-overdue {border-left:3px solid var(--red);padding-left:11px}
+.p-card.urg-critical{border-left:3px solid #ea580c;padding-left:11px}
+.p-card.urg-warning {border-left:3px solid var(--orange);padding-left:11px}
+.p-card.urg-upcoming{border-left:3px solid var(--blue);padding-left:11px}
+.urg-strip{font-size:10.5px;font-weight:700;margin-top:4px;letter-spacing:0.02em}
+.urg-strip-overdue {color:var(--red)}
+.urg-strip-critical{color:#ea580c}
+.urg-strip-warning {color:var(--orange)}
+.urg-strip-upcoming{color:var(--blue)}
+.due-urg-overdue {color:var(--red);font-weight:600}
+.due-urg-critical{color:#ea580c;font-weight:600}
+.due-urg-warning {color:var(--orange);font-weight:600}
+.due-urg-upcoming{color:var(--blue)}
+.urg-inline{font-size:10.5px;font-weight:700;margin-left:5px;opacity:0.9}
+.urg-banner{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:7px;font-size:12.5px;font-weight:500;margin-bottom:14px;flex-wrap:wrap}
+.urg-banner.sev-overdue {background:var(--red-bg);color:var(--red);border:1px solid #fecaca}
+.urg-banner.sev-critical{background:#fff4ee;color:#c2410c;border:1px solid #fed7aa}
+.urg-banner.sev-warning {background:var(--orange-bg);color:#92400e;border:1px solid #fde68a}
+.urg-banner-icon{font-size:14px;flex-shrink:0}
+.urg-banner-items{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.urg-b-item{display:flex;align-items:center;gap:5px;font-size:12px}
+.urg-b-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.urg-b-dot.overdue {background:var(--red)}
+.urg-b-dot.critical{background:#ea580c}
+.urg-b-dot.warning {background:var(--orange)}
+.stat-card.stat-urgent .stat-val{color:var(--red)}
+.stat-card.stat-urgent .stat-sub{color:var(--red);font-weight:600}
 .p-card-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
 .p-card-owner{font-size:11.5px;color:var(--text-muted);margin-bottom:8px}
 .p-card-value{font-size:17px;font-weight:700;color:var(--gold);margin-bottom:6px;letter-spacing:-0.01em}
@@ -209,6 +236,16 @@ textarea{resize:vertical;min-height:64px}
 .d-scope-box{background:var(--white);border:1px solid var(--card-border);border-radius:6px;padding:9px 11px;font-size:12px;color:var(--text-muted);line-height:1.55;margin-bottom:0}
 .detail-contacts-strip{background:#fafbfc;border:1px solid var(--col-bg);border-radius:8px;padding:12px 16px;margin-bottom:12px}
 .detail-contacts-strip-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-light);margin-bottom:10px}
+.di-count-blue{background:var(--blue-bg);color:var(--blue)}
+.dm-outreach-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.dm-outreach-summary{font-size:12px;color:var(--text-muted)}
+.dm-outreach-group{margin-bottom:14px}
+.dm-outreach-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-light);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.dm-or-row{display:flex;align-items:center;gap:10px;padding:7px 10px;background:#fafbfc;border:1px solid var(--col-bg);border-radius:6px;margin-bottom:5px}
+.dm-or-name{font-size:12.5px;font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm-or-meta{font-size:11px;color:var(--text-muted);white-space:nowrap;flex-shrink:0}
+.dm-outreach-empty{text-align:center;padding:28px 0 20px;color:var(--text-muted);font-size:13px}
+.dm-outreach-empty-hint{font-size:11.5px;color:var(--text-light);margin-top:4px;margin-bottom:16px}
 .dcontact-row{display:flex;align-items:flex-start;gap:14px;padding:7px 0;border-bottom:1px solid var(--col-bg)}
 .dcontact-row:last-child{border-bottom:none;padding-bottom:0}
 .dcontact-av{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
@@ -474,6 +511,59 @@ textarea{resize:vertical;min-height:64px}
 .settings-card{background:var(--white);border:1px solid var(--card-border);border-radius:8px;padding:20px 24px;margin-bottom:16px}
 .settings-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
 .settings-card-desc{font-size:12px;color:var(--text-muted);line-height:1.55;margin-bottom:18px}
+/* TEMPLATE EDITOR */
+.tpl-editor{display:grid;grid-template-columns:210px 1fr;gap:18px;margin-top:4px}
+.tpl-section-lbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-light);margin-bottom:8px;margin-top:16px}
+.tpl-section-lbl:first-child{margin-top:0}
+.tpl-chips{display:flex;flex-wrap:wrap;gap:5px}
+.tpl-chip{display:inline-flex;align-items:center;padding:3px 8px;background:#f0f4ff;color:var(--blue);border:1px solid #c7d9ff;border-radius:4px;font-size:11px;font-weight:600;cursor:grab;user-select:none;font-family:'JetBrains Mono',monospace;transition:background 0.1s,border-color 0.1s;white-space:nowrap}
+.tpl-chip:hover{background:#dbeafe;border-color:#93c5fd}
+.tpl-chip.dragging{opacity:0.35}
+.tpl-chip-hint{font-size:10.5px;color:var(--text-light);margin-top:6px;font-style:italic;line-height:1.5}
+.tpl-send-modes{display:flex;flex-direction:column;gap:6px}
+.tpl-send-opt{display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border:1px solid var(--card-border);border-radius:6px;cursor:pointer;transition:background 0.1s,border-color 0.1s}
+.tpl-send-opt:hover{background:#f9fafb}
+.tpl-send-opt input[type=radio]{width:auto;height:auto;padding:0;border:none;box-shadow:none;flex-shrink:0;margin-top:2px;accent-color:var(--blue);cursor:pointer}
+.tpl-send-opt-name{font-size:12.5px;font-weight:600;color:var(--text)}
+.tpl-send-opt-desc{font-size:10.5px;color:var(--text-muted);margin-top:1px}
+.tpl-mock-email{border:1px solid var(--card-border);border-radius:8px;overflow:hidden;background:var(--white)}
+.tpl-mock-hdr{background:#fafbfc;border-bottom:1px solid var(--card-border);padding:8px 14px;display:flex;flex-direction:column;gap:5px}
+.tpl-mock-row{display:flex;align-items:center;gap:8px}
+.tpl-mock-lbl{font-size:11px;font-weight:600;color:var(--text-muted);width:52px;text-align:right;flex-shrink:0}
+.tpl-mock-static{font-size:12.5px;color:var(--text-light)}
+.tpl-subject-input{flex:1;border:none;outline:none;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);padding:0;background:transparent;width:0;min-width:0}
+.tpl-subject-input::placeholder{color:var(--text-light)}
+.tpl-drop-zone{transition:background 0.12s,box-shadow 0.12s}
+.tpl-drop-zone.drag-active{background:#eff6ff;box-shadow:inset 0 0 0 2px var(--blue)}
+.tpl-body-input{width:100%;border:none;outline:none;resize:vertical;min-height:130px;padding:10px 14px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);line-height:1.65;display:block}
+.tpl-body-input::placeholder{color:var(--text-light)}
+.tpl-preview{margin-top:12px}
+.tpl-preview-lbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-light);margin-bottom:6px}
+.tpl-prev-subj{font-size:13px;font-weight:600;color:var(--text)}
+.tpl-prev-body-text{font-size:12.5px;color:var(--text);padding:10px 14px;white-space:pre-wrap;line-height:1.65;min-height:40px}
+/* send mode in ITB panel */
+.itb-send-modes{display:flex;gap:8px;flex-wrap:wrap}
+.itb-sm-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border:1px solid var(--card-border);border-radius:5px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--text-muted);transition:all 0.1s;background:var(--white)}
+.itb-sm-btn:hover{background:#f9fafb;color:var(--text)}
+.itb-sm-btn.active{background:#eff6ff;border-color:#93c5fd;color:var(--blue);font-weight:600}
+.itb-sm-btn input[type=radio]{width:auto;height:auto;padding:0;border:none;box-shadow:none;accent-color:var(--blue);cursor:pointer}
+/* send mode badge in template list */
+.tpl-mode-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:0.03em;background:#f0f4ff;color:var(--blue);border:1px solid #c7d9ff}
+/* TASK TEMPLATE EDITOR */
+.ttpl-row{display:grid;grid-template-columns:1fr 1fr 88px 26px;gap:7px;align-items:center;margin-bottom:7px}
+.ttpl-row input,.ttpl-row select{font-size:12px;padding:5px 8px}
+.ttpl-row select{padding-right:4px}
+.ttpl-remove{background:none;border:none;color:var(--text-light);font-size:15px;cursor:pointer;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:4px;transition:background 0.1s,color 0.1s}
+.ttpl-remove:hover{background:var(--red-bg);color:var(--red)}
+.ttpl-col-hdrs{display:grid;grid-template-columns:1fr 1fr 88px 26px;gap:7px;margin-bottom:4px}
+.ttpl-col-hdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-light)}
+.ttpl-empty{font-size:12.5px;color:var(--text-light);padding:10px 0;font-style:italic}
+.ttpl-list-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--col-bg)}
+.ttpl-list-row:last-child{border-bottom:none}
+.ttpl-list-name{font-weight:600;font-size:13px}
+.ttpl-list-count{font-size:11.5px;color:var(--text-muted);margin-top:1px}
+.ttpl-list-actions{display:flex;gap:6px;flex-shrink:0}
+.ttpl-builtin-badge{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:3px;background:var(--col-bg);color:var(--text-light);letter-spacing:0.03em;margin-left:6px}
 .settings-preview{display:flex;align-items:center;gap:14px;background:#fafbfc;border:1px solid var(--col-bg);border-radius:6px;padding:10px 14px;margin-top:14px}
 .settings-preview-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-light);white-space:nowrap}
 .settings-preview-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.04em}
@@ -589,12 +679,17 @@ textarea{resize:vertical;min-height:64px}
 .att-select{width:100%;border:1px solid var(--card-border);border-radius:5px;font-size:12.5px;font-family:'Inter',sans-serif;color:var(--text);padding:4px 6px;background:var(--white)}
 .b2w-col-btn{padding:5px 10px;background:var(--white);color:var(--text-muted);border:1px solid var(--card-border);border-radius:5px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;height:32px;transition:all 0.12s}
 .b2w-col-btn:hover,.b2w-col-btn.active{background:#f0f2f5;color:var(--text);border-color:#a0aec0}
-.b2w-col-popover{position:fixed;background:var(--white);border:1px solid var(--card-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.14);padding:12px 14px;min-width:180px;z-index:900;display:none}
+.b2w-col-popover{position:fixed;background:var(--white);border:1px solid var(--card-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.14);padding:12px 14px;width:220px;z-index:900;display:none;overflow:hidden}
 .b2w-col-popover.open{display:block}
-.b2w-col-popover-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-light);margin-bottom:10px}
-.b2w-col-chk-row{display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;font-size:12.5px;color:var(--text)}
-.b2w-col-chk-row input{accent-color:var(--blue);cursor:pointer}
-.b2w-col-chk-row:hover{color:var(--blue)}
+.b2w-col-popover-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-light);margin-bottom:6px}
+.b2w-col-popover-hint{font-size:10px;color:var(--text-light);margin-bottom:10px;font-style:italic}
+.b2w-col-chk-row{display:flex;align-items:center;gap:8px;padding:5px 4px;font-size:12.5px;color:var(--text);border-radius:5px;transition:background 0.1s;border:1.5px solid transparent;cursor:default}
+.b2w-col-chk-row input[type=checkbox]{accent-color:var(--blue);cursor:pointer;flex-shrink:0;width:auto;height:auto;padding:0;border:none;box-shadow:none}
+.b2w-col-chk-row:hover{background:#f4f6fa;color:var(--blue)}
+.b2w-col-chk-row.drag-over{border-top:2px solid var(--blue);background:#eff6ff}
+.col-drag-handle{cursor:grab;color:#c0c8d4;font-size:14px;user-select:none;flex-shrink:0;line-height:1;padding:0 2px}
+.col-drag-handle:hover{color:#6b7280}
+.b2w-col-chk-row.dragging{opacity:0.4}
 .est-table th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
 .est-table th.sortable:hover{background:#f0f4ff}
 .sort-arrow{color:var(--gold);margin-left:4px;font-size:10px}
@@ -653,8 +748,8 @@ textarea{resize:vertical;min-height:64px}
     <div class="tab active" onclick="showTab('pipeline',this)">Bid Pipeline</div>
     <div class="tab" onclick="showTab('estimates',this)">Estimates</div>
     <div class="tab" onclick="showTab('itb-rfq',this)">✉ ITB / RFQ</div>
-    <div class="tab" onclick="showTab('reports',this)">Reports</div>
     <div class="tab" onclick="showTab('tasks',this)">✓ Tasks</div>
+    <div class="tab" onclick="showTab('reports',this)">Reports</div>
     <div class="tab" onclick="showTab('b2w',this)">⬡ B2W Resources</div>
     <div class="tab" onclick="showTab('settings',this)">⚙ Settings</div>
   </div>
@@ -683,12 +778,14 @@ textarea{resize:vertical;min-height:64px}
           <div class="stat-val">38%</div>
           <div class="stat-sub green">Above industry avg</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" id="stat-due-week">
           <div class="stat-label">Due This Week</div>
-          <div class="stat-val">2</div>
-          <div class="stat-sub">Bids requiring attention</div>
+          <div class="stat-val" id="stat-due-val">—</div>
+          <div class="stat-sub" id="stat-due-sub">Calculating…</div>
         </div>
       </div>
+
+      <div id="urg-banner"></div>
 
       <div class="pipeline-actions">
         <button class="btn-new-bid" onclick="openNewBid()">+ New Bid</button>
@@ -898,6 +995,17 @@ textarea{resize:vertical;min-height:64px}
             <label>Message</label>
             <textarea id="itb-body" rows="6" placeholder="Write your email message here..."></textarea>
           </div>
+          <div class="f-field span-3">
+            <label>Send Mode</label>
+            <div class="itb-send-modes">
+              <label class="itb-sm-btn active" id="itb-sm-individual">
+                <input type="radio" name="itb-send-mode" value="individual" checked onchange="itbSendModeChange()"> Individual — one email per recipient
+              </label>
+              <label class="itb-sm-btn" id="itb-sm-bcc">
+                <input type="radio" name="itb-send-mode" value="bcc" onchange="itbSendModeChange()"> BCC — all recipients blind CC'd
+              </label>
+            </div>
+          </div>
           <div class="f-field span-3" style="display:flex;align-items:center;justify-content:flex-end;gap:8px">
             <button class="btn btn-secondary" onclick="renderItbRfqPanel()">Refresh</button>
             <button class="btn btn-primary" onclick="sendItbRfqEmail()">Send Email</button>
@@ -949,21 +1057,7 @@ textarea{resize:vertical;min-height:64px}
           <div class="r-stat-label" id="r-win-rate-label" style="color:var(--text-muted)">No decisions yet</div>
           <div id="r-win-metrics" style="margin-top:14px;font-size:12px;color:var(--text-muted)">0 won · 0 lost · 0 active</div>
         </div>
-        <div class="r-card" style="grid-column:span 2">
-          <div class="r-card-title" style="margin-bottom:12px">Open Questions — Decisions Needed Before Build</div>
-          <table class="q-table">
-            <thead><tr><th style="width:44px">#</th><th style="width:170px">Topic</th><th>Question</th><th style="width:80px">Priority</th></tr></thead>
-            <tbody>
-              <tr><td class="q-num">01</td><td class="q-topic">Backend Storage</td><td class="q-text">SharePoint Lists or PostgreSQL for non-B2W fields? Affects the consultant frontend, Power BI connections, and long-term maintenance.</td><td><span class="crit-badge">Critical</span></td></tr>
-              <tr><td class="q-num">02</td><td class="q-topic">Bid Number Format</td><td class="q-text">Preferred format and sequence? (e.g. 2025-001, CC-2025-042) Auto-increment or manual?</td><td></td></tr>
-              <tr><td class="q-num">03</td><td class="q-topic">Project Location</td><td class="q-text">Structured address (street + city + state + zip) in addition to free-text description?</td><td></td></tr>
-              <tr><td class="q-num">04</td><td class="q-topic">Pre-Bid Location</td><td class="q-text">Free-text or structured address for the Pre-Bid Meeting Location field?</td><td></td></tr>
-              <tr><td class="q-num">05</td><td class="q-topic">Org Duplicate Check</td><td class="q-text">Near-duplicate orgs in lookup — alert the user or just show all matches?</td><td></td></tr>
-              <tr><td class="q-num">06</td><td class="q-topic">Status After Estimate</td><td class="q-text">Track Submitted / Awarded / Lost for win-rate reporting in Power BI?</td><td></td></tr>
-              <tr><td class="q-num">07</td><td class="q-topic">Estimator Default</td><td class="q-text">Auto-populate Estimator from logged-in user, or always require manual selection?</td><td></td></tr>
-            </tbody>
-          </table>
-        </div>
+
       </div>
     </div>
 
@@ -1123,27 +1217,112 @@ textarea{resize:vertical;min-height:64px}
           </div>
         </div>
 
+        <!-- Task Templates — app-local; phases appear in the "From Template" picker on the Tasks tab -->
+        <div class="settings-card">
+          <div class="settings-card-title">Task Checklist Templates</div>
+          <div class="settings-card-desc">Build reusable task checklists for each phase of the bid process. Templates appear in the "⊞ From Template" picker on the Tasks tab and inside project detail views.</div>
+          <div id="set-task-tpl-list"></div>
+          <div style="margin-top:4px">
+            <div class="f-field" style="margin-bottom:12px">
+              <label>Template / Phase Name</label>
+              <input type="text" id="set-ttpl-name" placeholder="e.g. Design-Build, Pre-Construction">
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <label style="margin:0">Tasks</label>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 9px" onclick="ttplAddRow()">+ Add Task</button>
+            </div>
+            <div class="ttpl-col-hdrs">
+              <span class="ttpl-col-hdr">Title</span>
+              <span class="ttpl-col-hdr">Description</span>
+              <span class="ttpl-col-hdr">Priority</span>
+              <span></span>
+            </div>
+            <div id="set-ttpl-rows"></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:14px">
+            <button class="btn btn-primary" onclick="saveTaskTemplate()">Save Template</button>
+          </div>
+        </div>
+
         <!-- ITB Templates — app-local only; template content is merged with data from GET /Estimate/Bid at send time -->
         <div class="settings-card">
           <div class="settings-card-title">ITB / RFQ Email Templates</div>
-          <div class="settings-card-desc">Create reusable outreach templates for project-specific ITB and RFQ emails. Supported placeholders: <code>{{project}}</code>, <code>{{owner}}</code>, <code>{{due}}</code>.</div>
+          <div class="settings-card-desc">Build reusable outreach templates. Drag a field chip onto the subject or body — or click a chip to insert at the cursor. Choose a send mode per template.</div>
           <div id="set-itb-templates"></div>
-          <div class="f-grid">
-            <div class="f-field">
-              <label>Template Name</label>
-              <input type="text" id="set-itb-name" placeholder="e.g. Standard ITB Request">
+          <div class="tpl-editor">
+            <!-- Left: name, field palette, send mode -->
+            <div>
+              <div class="tpl-section-lbl" style="margin-top:0">Template Name</div>
+              <input type="text" id="set-itb-name" placeholder="e.g. Standard ITB Request" style="width:100%">
+              <div class="tpl-section-lbl">Available Fields</div>
+              <div class="tpl-chips" id="tpl-chip-palette"></div>
+              <div class="tpl-chip-hint">Drag onto subject or body,<br>or click to insert at cursor.</div>
+              <div class="tpl-section-lbl">Send Mode</div>
+              <div class="tpl-send-modes">
+                <label class="tpl-send-opt">
+                  <input type="radio" name="tpl-send-mode" value="individual" checked>
+                  <div>
+                    <div class="tpl-send-opt-name">Individual</div>
+                    <div class="tpl-send-opt-desc">One personalized email per recipient</div>
+                  </div>
+                </label>
+                <label class="tpl-send-opt">
+                  <input type="radio" name="tpl-send-mode" value="bcc">
+                  <div>
+                    <div class="tpl-send-opt-name">BCC</div>
+                    <div class="tpl-send-opt-desc">Single email, all recipients blind CC'd</div>
+                  </div>
+                </label>
+              </div>
             </div>
-            <div class="f-field">
-              <label>Email Subject</label>
-              <input type="text" id="set-itb-subject" placeholder="e.g. ITB Request — {{project}}">
+            <!-- Right: mock email composer + live preview -->
+            <div>
+              <div class="tpl-section-lbl" style="margin-top:0">Compose</div>
+              <div class="tpl-mock-email">
+                <div class="tpl-mock-hdr">
+                  <div class="tpl-mock-row">
+                    <span class="tpl-mock-lbl">From:</span>
+                    <span class="tpl-mock-static">Creel Contracting &lt;estimating@creel.com&gt;</span>
+                  </div>
+                  <div class="tpl-mock-row">
+                    <span class="tpl-mock-lbl">To:</span>
+                    <span class="tpl-mock-static">recipient@example.com</span>
+                  </div>
+                  <div class="tpl-mock-row tpl-drop-zone" id="tpl-subj-drop"
+                    ondragover="tplDragOver(event,'tpl-subj-drop')"
+                    ondragleave="tplDragLeave(event,'tpl-subj-drop')"
+                    ondrop="tplDropInto(event,'set-itb-subject','tpl-subj-drop')">
+                    <span class="tpl-mock-lbl">Subject:</span>
+                    <input type="text" id="set-itb-subject" class="tpl-subject-input"
+                      placeholder="e.g. ITB Request — {{project}}"
+                      onfocus="tplSetFocus('set-itb-subject')" oninput="tplUpdatePreview()">
+                  </div>
+                </div>
+                <div class="tpl-drop-zone" id="tpl-body-drop"
+                  ondragover="tplDragOver(event,'tpl-body-drop')"
+                  ondragleave="tplDragLeave(event,'tpl-body-drop')"
+                  ondrop="tplDropInto(event,'set-itb-body','tpl-body-drop')">
+                  <textarea id="set-itb-body" class="tpl-body-input" rows="7"
+                    placeholder="Hello,&#10;&#10;Please review the bidding documents for {{project}} and submit your quote by {{due}}. Contact {{owner}} if you have project questions.&#10;&#10;Thanks,&#10;{{sender}} — {{company}}"
+                    onfocus="tplSetFocus('set-itb-body')" oninput="tplUpdatePreview()"></textarea>
+                </div>
+              </div>
+              <div class="tpl-preview">
+                <div class="tpl-preview-lbl">Preview — sample data</div>
+                <div class="tpl-mock-email">
+                  <div class="tpl-mock-hdr">
+                    <div class="tpl-mock-row">
+                      <span class="tpl-mock-lbl">Subject:</span>
+                      <span class="tpl-prev-subj" id="tpl-prev-subj"></span>
+                    </div>
+                  </div>
+                  <div class="tpl-prev-body-text" id="tpl-prev-body"></div>
+                </div>
+              </div>
             </div>
-            <div class="f-field span-2">
-              <label>Message Body</label>
-              <textarea id="set-itb-body" rows="3" placeholder="Hello,\n\nPlease submit...\n"></textarea>
-            </div>
-            <div class="f-field span-2" style="display:flex;justify-content:flex-end;align-items:flex-end">
-              <button class="btn btn-primary" onclick="saveItbTemplate()">Save Template</button>
-            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:14px">
+            <button class="btn btn-primary" onclick="saveItbTemplate()">Save Template</button>
           </div>
         </div>
 
@@ -1167,11 +1346,7 @@ textarea{resize:vertical;min-height:64px}
         <div class="b2w-res-tab"        id="brt-orgs"      onclick="showB2wTab('orgs')">Organizations <span class="b2w-res-count" id="brc-orgs">0</span></div>
       </div>
 
-      <!-- Shared column picker popover -->
-      <div class="b2w-col-popover" id="b2w-col-popover">
-        <div class="b2w-col-popover-title">Visible Columns</div>
-        <div id="b2w-col-popover-body"></div>
-      </div>
+
 
       <!-- Labor pane -->
       <div class="b2w-res-pane active" id="brp-labor">
@@ -1599,9 +1774,10 @@ textarea{resize:vertical;min-height:64px}
 
       <!-- Inner tab bar -->
       <div class="detail-inner-tabs">
-        <div class="detail-inner-tab active" id="dit-overview" onclick="dmShowTab('overview')">Overview</div>
-        <div class="detail-inner-tab" id="dit-tasks"    onclick="dmShowTab('tasks')">Tasks <span class="di-count" id="dm-task-count">0</span></div>
-        <div class="detail-inner-tab" id="dit-notes"    onclick="dmShowTab('notes')">Notes &amp; Files</div>
+        <div class="detail-inner-tab active" id="dit-overview"  onclick="dmShowTab('overview')">Overview</div>
+        <div class="detail-inner-tab"        id="dit-tasks"     onclick="dmShowTab('tasks')">Tasks <span class="di-count" id="dm-task-count">0</span></div>
+        <div class="detail-inner-tab"        id="dit-outreach"  onclick="dmShowTab('outreach')">✉ Outreach <span class="di-count di-count-blue" id="dm-outreach-count">0</span></div>
+        <div class="detail-inner-tab"        id="dit-notes"     onclick="dmShowTab('notes')">Notes &amp; Files</div>
       </div>
 
       <!-- ── Overview pane ─────────────────────────────────────────────── -->
@@ -1690,6 +1866,11 @@ textarea{resize:vertical;min-height:64px}
           </div>
         </div>
         <div id="dm-task-list"></div>
+      </div>
+
+      <!-- ── Outreach pane ─────────────────────────────────────────────── -->
+      <div class="detail-pane" id="dm-pane-outreach">
+        <div id="dm-outreach-body"></div>
       </div>
 
       <!-- ── Notes & Files pane ─────────────────────────────────────────── -->
@@ -2764,8 +2945,8 @@ const estSettings = { bidPrefix: '', bidSep: '-', bidYear: true, bidPad: 3 };
 
 // ── ITB / RFQ email templates and outreach tracking ───────────────────────────
 const emailTemplates = [
-  {name:'Standard ITB Request', subject:'ITB Request — {{project}}', body:'Hello,\n\nPlease review the bidding documents for {{project}} and submit your ITB by {{due}}. Client: {{owner}}. If you have any questions, reply to this email.\n\nThanks,\nCreel Contracting'},
-  {name:'RFQ Invitation',       subject:'RFQ Invitation — {{project}}', body:'Hello,\n\nWe are inviting pricing for {{project}} on behalf of {{owner}}. Please send your RFQ by {{due}} and include availability and key exclusions.\n\nBest,\nCreel Contracting'},
+  {name:'Standard ITB Request', sendMode:'individual', subject:'ITB Request — {{project}} (Due {{due}})', body:'Hello,\n\nPlease review the bidding documents for {{project}} and submit your ITB by {{due}}.\n\nProject: {{project}}\nLocation: {{location}}\nClient: {{owner}}\nBid #: {{bidNum}}\n\nIf you have any questions, reply to this email.\n\nThanks,\n{{sender}} — {{company}}'},
+  {name:'RFQ Invitation',       sendMode:'individual', subject:'RFQ Invitation — {{project}}',           body:'Hello,\n\nWe are inviting pricing for {{project}} on behalf of {{owner}}. Please send your RFQ by {{due}} and include availability and key exclusions.\n\nEst. Value: {{value}}\nLocation: {{location}}\n\nBest,\n{{sender}} — {{company}}'},
 ];
 const itbRequests = [];
 
@@ -3207,11 +3388,12 @@ function showTab(id, el) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-' + id).classList.add('active');
-  if (id === 'settings') { renderTeamList(); updateBidPreview(); renderEmailTemplates(); }
+  if (id === 'pipeline') { refreshUrgencyBadges(); }
+  if (id === 'estimates'){ renderEstimates(); }
+  if (id === 'settings') { renderTeamList(); updateBidPreview(); renderEmailTemplates(); tplBuildChips(); tplUpdatePreview(); renderTaskTemplateSettings(); ttplRenderRows(); }
   if (id === 'tasks')    { initTasksPanel(); }
   if (id === 'b2w')      { initB2wPanel(); }
   if (id === 'reports')  { renderReportsPanel(); }
-  if (id === 'estimates'){ renderEstimates(); }
   if (id === 'itb-rfq')  { renderItbRfqPanel(); }
 }
 
@@ -3429,7 +3611,7 @@ function closeNewBid() {
 }
 
 function dmShowTab(id) {
-  ['overview','tasks','notes'].forEach(t => {
+  ['overview','tasks','outreach','notes'].forEach(t => {
     document.getElementById('dit-' + t)?.classList.toggle('active', t === id);
     document.getElementById('dm-pane-' + t)?.classList.toggle('active', t === id);
   });
@@ -3525,6 +3707,9 @@ function openDetail(id) {
   // Task badge count
   const projTasks = tasksDb.filter(t => t.projectId === id);
   document.getElementById('dm-task-count').textContent = projTasks.length;
+
+  // Outreach pane
+  renderDmOutreach(id);
 
   // Footer meta
   document.getElementById('dm-footer-meta').textContent =
@@ -3652,6 +3837,93 @@ function saveDmNotes() {
   if (!currentDetailId || !projects[currentDetailId]) return;
   projects[currentDetailId].notes = document.getElementById('dm-notes-area').value;
   toast('Notes saved');
+}
+
+function renderDmOutreach(projectId) {
+  const el = document.getElementById('dm-outreach-body');
+  const badge = document.getElementById('dm-outreach-count');
+  if (!el) return;
+
+  const tracker = itbTracker[projectId];
+  const contacts = tracker ? Object.entries(tracker.contacts) : [];
+  if (badge) badge.textContent = contacts.length;
+
+  if (!contacts.length) {
+    el.innerHTML = `
+      <div class="dm-outreach-empty">
+        No ITB / RFQ outreach sent for this project yet.
+        <div class="dm-outreach-empty-hint">Use the ITB / RFQ tab to send invitations to subcontractors and vendors.</div>
+        <button class="btn btn-primary" style="font-size:12px" onclick="navToItbForProject('${projectId}')">✉ Go to ITB / RFQ</button>
+      </div>`;
+    return;
+  }
+
+  // Group by work type
+  const groups = {};
+  contacts.forEach(([name, info]) => {
+    const wt = info.workType || 'Other';
+    if (!groups[wt]) groups[wt] = [];
+    groups[wt].push([name, info]);
+  });
+
+  // Summary counts
+  const quotes    = contacts.filter(([,i]) => i.status === 'quote').length;
+  const responded = contacts.filter(([,i]) => i.status === 'responded').length;
+  const declined  = contacts.filter(([,i]) => i.status === 'declined').length;
+  const summaryParts = [`${contacts.length} contact${contacts.length === 1 ? '' : 's'}`];
+  if (quotes)    summaryParts.push(`${quotes} quote${quotes === 1 ? '' : 's'} received`);
+  if (responded) summaryParts.push(`${responded} responded`);
+  if (declined)  summaryParts.push(`${declined} declined`);
+
+  const groupsHtml = Object.entries(groups).map(([wt, rows]) => {
+    const rowsHtml = rows.map(([name, info]) => {
+      const def = ITB_STATUS_DEFS[info.status] || ITB_STATUS_DEFS.sent;
+      const displayName = name.split('•')[0].trim();
+      const email = name.includes('•') ? name.split('•')[1].trim() : '';
+      return `<div class="dm-or-row">
+        <div style="flex:1;min-width:0">
+          <div class="dm-or-name">${displayName}</div>
+          <div class="dm-or-meta">${info.orgName}${email ? ' · ' + email : ''}</div>
+        </div>
+        <div class="dm-or-meta" style="margin-right:8px">Sent ${info.sentAt}</div>
+        <button class="itb-status-btn ${def.cls}" title="Click to advance status"
+          onclick="dmAdvanceOutreachStatus('${projectId}','${name.replace(/'/g,"\\'")}')">
+          ${def.label} ›
+        </button>
+      </div>`;
+    }).join('');
+    return `<div class="dm-outreach-group">
+      <div class="dm-outreach-group-title"><span class="itb-cov-dot ${rows.some(([,i])=>i.status==='quote')?'itb-cov-full':rows.some(([,i])=>['sent','responded'].includes(i.status))?'itb-cov-partial':'itb-cov-none'}"></span>${wt}</div>
+      ${rowsHtml}
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="dm-outreach-hdr">
+      <div class="dm-outreach-summary">${summaryParts.join(' · ')}</div>
+      <button class="btn btn-primary" style="font-size:12px" onclick="navToItbForProject('${projectId}')">+ Send More</button>
+    </div>
+    ${groupsHtml}`;
+}
+
+function dmAdvanceOutreachStatus(projectId, contactName) {
+  const tracker = itbTracker[projectId];
+  if (!tracker?.contacts[contactName]) return;
+  const current = tracker.contacts[contactName].status;
+  const def = ITB_STATUS_DEFS[current];
+  if (def?.next) tracker.contacts[contactName].status = def.next;
+  renderDmOutreach(projectId);
+  renderItbTracker();
+}
+
+function navToItbForProject(projectId) {
+  closeOverlay('overlay-detail');
+  const itbTab = [...document.querySelectorAll('.tab')].find(t => t.textContent.includes('ITB'));
+  if (itbTab) itbTab.click();
+  setTimeout(() => {
+    const sel = document.getElementById('itb-project-select');
+    if (sel && projectId) { sel.value = projectId; sel.dispatchEvent(new Event('change')); }
+  }, 80);
 }
 
 function renderDmContacts(ownerName) {
@@ -4018,7 +4290,13 @@ function getEstimateCellHtml(project, key) {
   if (key === 'estNum') return project.estNum || '—';
   if (key === 'bidNum') return project.bidNum;
   if (key === 'owner') return project.owner;
-  if (key === 'due') return fmtDate(project.due);
+  if (key === 'due') {
+    const days = daysUntilDue(project.due);
+    const lvl  = urgencyLevel(days);
+    const cls  = lvl ? ` class="due-urg-${lvl}"` : '';
+    const tag  = lvl && days <= 7 ? `<span class="urg-inline">(${urgencyLabel(days)})</span>` : '';
+    return `<span${cls}>${fmtDate(project.due)}${tag}</span>`;
+  }
   if (key === 'bidAs') return project.bidAs || '—';
   if (key === 'val') return `<span class="est-val">${project.val}</span>`;
   if (key === 'b2wId') return project.b2wId ? `<span style="color:var(--green)">${project.b2wId}</span>` : '—';
@@ -4059,16 +4337,99 @@ function getItbContactPool(wtFilter, stFilter) {
   return [...unique.values()];
 }
 
-function fillItbTemplate(text, project) {
+const TPL_FIELDS = [
+  { key:'project',  label:'Project Name' },
+  { key:'owner',    label:'Client / Owner' },
+  { key:'due',      label:'Bid Due Date' },
+  { key:'bidNum',   label:'Bid Number' },
+  { key:'estNum',   label:'Estimate #' },
+  { key:'location', label:'Location' },
+  { key:'value',    label:'Est. Value' },
+  { key:'sender',   label:'Sender Name' },
+  { key:'company',  label:'Company' },
+  { key:'date',     label:"Today's Date" },
+];
+
+const TPL_SAMPLE = {
+  project:  'Hwy 41 Paving — Phase 2',
+  owner:    'GDOT',
+  due:      'Jun 6, 2026',
+  bidNum:   'CC-2026-042',
+  estNum:   'EST-2026-042',
+  location: 'Dalton, GA',
+  value:    '$2,450,000',
+  sender:   'J. Creel',
+  company:  'Creel Contracting',
+  date:     new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+};
+
+let _tplFocused = 'set-itb-body';
+
+function tplSetFocus(elId) { _tplFocused = elId; }
+
+function tplDragOver(e, zoneId) {
+  e.preventDefault();
+  document.getElementById(zoneId)?.classList.add('drag-active');
+}
+
+function tplDragLeave(e, zoneId) {
+  if (!e.currentTarget.contains(e.relatedTarget))
+    document.getElementById(zoneId)?.classList.remove('drag-active');
+}
+
+function tplDropInto(e, elId, zoneId) {
+  e.preventDefault();
+  document.getElementById(zoneId)?.classList.remove('drag-active');
+  const placeholder = e.dataTransfer.getData('text/plain');
+  if (placeholder) tplInsertAt(elId, placeholder);
+}
+
+function tplClickChip(placeholder) { tplInsertAt(_tplFocused, placeholder); }
+
+function tplInsertAt(elId, text) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const s = el.selectionStart ?? el.value.length;
+  const en = el.selectionEnd ?? el.value.length;
+  el.value = el.value.slice(0, s) + text + el.value.slice(en);
+  el.selectionStart = el.selectionEnd = s + text.length;
+  el.focus();
+  tplUpdatePreview();
+}
+
+function tplUpdatePreview() {
+  const subj = document.getElementById('set-itb-subject')?.value || '';
+  const body = document.getElementById('set-itb-body')?.value || '';
+  document.getElementById('tpl-prev-subj').textContent = fillItbTemplate(subj, null, TPL_SAMPLE);
+  document.getElementById('tpl-prev-body').textContent = fillItbTemplate(body, null, TPL_SAMPLE);
+}
+
+function tplBuildChips() {
+  const palette = document.getElementById('tpl-chip-palette');
+  if (!palette) return;
+  palette.innerHTML = TPL_FIELDS.map(f =>
+    `<span class="tpl-chip" draggable="true"
+      ondragstart="event.dataTransfer.setData('text/plain','{{${f.key}}}');this.classList.add('dragging')"
+      ondragend="this.classList.remove('dragging')"
+      onclick="tplClickChip('{{${f.key}}}')">{{${f.key}}}</span>`
+  ).join('');
+}
+
+function fillItbTemplate(text, project, sample) {
   if (!text) return '';
-  const data = {
-    project: project?.name || 'project',
-    owner: project?.owner || 'owner',
-    due: project?.due || 'TBD',
+  const src = sample || {
+    project:  project?.name   || '{{project}}',
+    owner:    project?.owner  || '{{owner}}',
+    due:      project?.due    || '{{due}}',
+    bidNum:   project?.bidNum || '{{bidNum}}',
+    estNum:   project?.estNum || '{{estNum}}',
+    location: project?.location || '{{location}}',
+    value:    project?.val    || '{{value}}',
+    sender:   'J. Creel',
+    company:  'Creel Contracting',
+    date:     new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
   };
-  return text.replace(/\{\{project\}\}/g, data.project)
-             .replace(/\{\{owner\}\}/g, data.owner)
-             .replace(/\{\{due\}\}/g, data.due);
+  return text.replace(/\{\{(\w+)\}\}/g, (_, k) => src[k] ?? `{{${k}}}`);
 }
 
 function renderItbTemplateOptions() {
@@ -4085,6 +4446,15 @@ function applyItbTemplate(name) {
   if (!template) return;
   document.getElementById('itb-subject').value = fillItbTemplate(template.subject, project);
   document.getElementById('itb-body').value    = fillItbTemplate(template.body, project);
+  const mode = template.sendMode || 'individual';
+  document.querySelectorAll('input[name="itb-send-mode"]').forEach(r => r.checked = r.value === mode);
+  itbSendModeChange();
+}
+
+function itbSendModeChange() {
+  const mode = document.querySelector('input[name="itb-send-mode"]:checked')?.value || 'individual';
+  document.getElementById('itb-sm-individual')?.classList.toggle('active', mode === 'individual');
+  document.getElementById('itb-sm-bcc')?.classList.toggle('active', mode === 'bcc');
 }
 
 function renderItbActivity() {
@@ -4124,13 +4494,13 @@ function saveItbTemplate() {
   const subject = document.getElementById('set-itb-subject')?.value.trim();
   const body = document.getElementById('set-itb-body')?.value.trim();
   if (!name || !subject || !body) { toast('Template name, subject, and body are required'); return; }
+  const sendMode = document.querySelector('input[name="tpl-send-mode"]:checked')?.value || 'individual';
   const existing = emailTemplates.find(t => t.name === name);
   if (existing) {
-    existing.subject = subject;
-    existing.body = body;
+    existing.subject = subject; existing.body = body; existing.sendMode = sendMode;
     toast(`Template updated: ${name}`);
   } else {
-    emailTemplates.push({name, subject, body});
+    emailTemplates.push({name, subject, body, sendMode});
     toast(`Template saved: ${name}`);
   }
   renderEmailTemplates();
@@ -4146,23 +4516,38 @@ function deleteEmailTemplate(name) {
   toast(`Template deleted: ${name}`);
 }
 
+function loadTemplateIntoEditor(name) {
+  const t = emailTemplates.find(t => t.name === name);
+  if (!t) return;
+  document.getElementById('set-itb-name').value    = t.name;
+  document.getElementById('set-itb-subject').value = t.subject;
+  document.getElementById('set-itb-body').value    = t.body;
+  const mode = t.sendMode || 'individual';
+  document.querySelectorAll('input[name="tpl-send-mode"]').forEach(r => r.checked = r.value === mode);
+  tplUpdatePreview();
+}
+
 function renderEmailTemplates() {
   const wrapper = document.getElementById('set-itb-templates');
   if (!wrapper) return;
   if (!emailTemplates.length) {
-    wrapper.innerHTML = `<div style="font-size:12.5px;color:var(--text-muted);padding:10px 0">No email templates saved yet.</div>`;
+    wrapper.innerHTML = `<div style="font-size:12.5px;color:var(--text-muted);padding:10px 0 14px">No templates saved yet.</div>`;
     return;
   }
   wrapper.innerHTML = emailTemplates.map(t => {
     const safeName = t.name.replace(/'/g, "\\'");
-    return `<div class="team-row" style="align-items:center;justify-content:space-between;gap:10px">
-      <div>
-        <div style="font-weight:600">${t.name}</div>
-        <div style="font-size:12px;color:var(--text-muted)">${t.subject}</div>
+    const modeLabel = t.sendMode === 'bcc' ? 'BCC' : 'Individual';
+    return `<div class="team-row" style="align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px">
+      <div style="min-width:0">
+        <div style="font-weight:600;display:flex;align-items:center;gap:7px">${t.name} <span class="tpl-mode-badge">${modeLabel}</span></div>
+        <div style="font-size:11.5px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.subject}</div>
       </div>
-      <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px" onclick="deleteEmailTemplate('${safeName}')">Delete</button>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn btn-secondary" style="font-size:11px;padding:4px 9px" onclick="loadTemplateIntoEditor('${safeName}')">Edit</button>
+        <button class="btn btn-danger" style="font-size:11px;padding:4px 9px" onclick="deleteEmailTemplate('${safeName}')">Delete</button>
+      </div>
     </div>`;
-  }).join('');
+  }).join('') + `<hr style="border:none;border-top:1px solid var(--col-bg);margin:12px 0 14px">`;
 }
 
 function sendItbRfqEmail() {
@@ -4171,11 +4556,11 @@ function sendItbRfqEmail() {
   const subject = document.getElementById('itb-subject')?.value.trim();
   const body = document.getElementById('itb-body')?.value.trim();
   const recipients = [...itbInvitees];
+  const sendMode = document.querySelector('input[name="itb-send-mode"]:checked')?.value || 'individual';
   if (!projectId || !project) { toast('Select a project first'); return; }
   if (!subject || !body) { toast('Add a subject and message before sending'); return; }
   if (!recipients.length) { toast('Select at least one recipient'); return; }
 
-  // Populate tracker — look up work type from the full contact pool
   if (!itbTracker[projectId]) itbTracker[projectId] = { contacts: {} };
   const poolMap = new Map(getItbContactPool().map(m => [m.name, m]));
   const now = new Date().toLocaleString('en-US', { month:'short', day:'numeric' });
@@ -4194,31 +4579,82 @@ function sendItbRfqEmail() {
   itbRequests.unshift({
     projectId, projectName: project.name,
     templateName: document.getElementById('itb-template-select')?.value || 'Custom',
-    subject, body, recipients,
+    subject, body, recipients, sendMode,
     sentAt: new Date().toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})
   });
 
   renderItbTracker();
-  toast(`ITB/RFQ sent to ${recipients.length} recipient${recipients.length === 1 ? '' : 's'}`);
+  const modeDesc = sendMode === 'bcc' ? 'as BCC' : `individually to ${recipients.length} recipient${recipients.length === 1 ? '' : 's'}`;
+  toast(`ITB/RFQ sent ${modeDesc}`);
+}
+
+function renderColPickerBody(type) {
+  const colDefs = getColDefs(type);
+  document.getElementById('b2w-col-popover-body').innerHTML = colDefs.map(c =>
+    `<div class="b2w-col-chk-row" draggable="true" data-key="${c.key}" data-type="${type}"
+      ondragstart="colPickDragStart(event)" ondragover="colPickDragOver(event)"
+      ondragleave="colPickDragLeave(event)" ondrop="colPickDrop(event)" ondragend="colPickDragEnd(event)">
+      <span class="col-drag-handle">⠿</span>
+      <input type="checkbox" ${c.vis ? 'checked' : ''} onchange="toggleB2wCol('${type}','${c.key}',this.checked)">
+      <span style="flex:1">${c.label}</span>
+    </div>`
+  ).join('');
+}
+
+let _colPickDragKey = null;
+
+function colPickDragStart(e) {
+  _colPickDragKey = e.currentTarget.dataset.key;
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.classList.add('dragging');
+}
+
+function colPickDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.b2w-col-chk-row.drag-over').forEach(el => el.classList.remove('drag-over'));
+  e.currentTarget.classList.add('drag-over');
+}
+
+function colPickDragLeave(e) {
+  if (!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('drag-over');
+}
+
+function colPickDragEnd(e) {
+  document.querySelectorAll('.b2w-col-chk-row.dragging, .b2w-col-chk-row.drag-over')
+    .forEach(el => el.classList.remove('dragging', 'drag-over'));
+}
+
+function colPickDrop(e) {
+  e.preventDefault();
+  const targetKey = e.currentTarget.dataset.key;
+  const type = e.currentTarget.dataset.type;
+  if (!_colPickDragKey || _colPickDragKey === targetKey) return;
+  const defs = getColDefs(type);
+  const fromIdx = defs.findIndex(c => c.key === _colPickDragKey);
+  const toIdx   = defs.findIndex(c => c.key === targetKey);
+  if (fromIdx === -1 || toIdx === -1) return;
+  const [moved] = defs.splice(fromIdx, 1);
+  defs.splice(toIdx, 0, moved);
+  renderColPickerBody(type);
+  if (type === 'estimates') renderEstimates();
+  else renderB2w(type);
 }
 
 function openColPicker(type, btnEl) {
-  const colDefs = getColDefs(type);
   const pop = document.getElementById('b2w-col-popover');
   if (b2wColPickerType === type && pop.classList.contains('open')) { closeColPicker(); return; }
   b2wColPickerType = type;
   document.querySelectorAll('.b2w-col-btn').forEach(b => b.classList.remove('active'));
   btnEl.classList.add('active');
-  document.getElementById('b2w-col-popover-body').innerHTML =
-    colDefs.map(c =>
-      `<label class="b2w-col-chk-row">
-        <input type="checkbox" ${c.vis ? 'checked' : ''} onchange="toggleB2wCol('${type}','${c.key}',this.checked)">
-        ${c.label}
-      </label>`
-    ).join('');
+  renderColPickerBody(type);
   const rect = btnEl.getBoundingClientRect();
-  pop.style.top  = (rect.bottom + 6) + 'px';
-  pop.style.left = rect.left + 'px';
+  const popW = 220;
+  let left = rect.right - popW;
+  if (left < 8) left = rect.left;
+  let top = rect.bottom + 6;
+  pop.style.left = left + 'px';
+  pop.style.top  = top  + 'px';
   pop.classList.add('open');
 }
 
@@ -4826,12 +5262,98 @@ function removeTeamMember(i) {
 }
 
 // ── Shared card HTML builder ─────────────────────────────────────────────────
+// ── Due-date urgency ─────────────────────────────────────────────────────────
+
+function daysUntilDue(dateStr) {
+  if (!dateStr) return null;
+  const due = new Date(dateStr + 'T00:00:00');
+  if (isNaN(due)) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.floor((due - today) / 86400000);
+}
+
+function urgencyLevel(days) {
+  if (days === null) return null;
+  if (days < 0)  return 'overdue';
+  if (days <= 2) return 'critical';
+  if (days <= 7) return 'warning';
+  if (days <= 14) return 'upcoming';
+  return null;
+}
+
+function urgencyLabel(days) {
+  if (days === null) return '';
+  if (days < 0)  return `Overdue by ${Math.abs(days)} day${Math.abs(days) === 1 ? '' : 's'}`;
+  if (days === 0) return 'Due Today';
+  if (days === 1) return 'Due Tomorrow';
+  return `Due in ${days} days`;
+}
+
+function applyUrgencyToCard(card, dateStr) {
+  card.classList.remove('urg-overdue','urg-critical','urg-warning','urg-upcoming');
+  card.querySelectorAll('.urg-strip').forEach(el => el.remove());
+  const days = daysUntilDue(dateStr);
+  const level = urgencyLevel(days);
+  if (!level) return;
+  card.classList.add('urg-' + level);
+  const strip = document.createElement('div');
+  strip.className = `urg-strip urg-strip-${level}`;
+  strip.textContent = urgencyLabel(days);
+  const footer = card.querySelector('.p-card-footer');
+  if (footer) footer.before(strip);
+}
+
+function refreshUrgencyBadges() {
+  const activeCols = ['col-lead','col-estimate','col-pending'];
+  const counts = { overdue:0, critical:0, warning:0 };
+
+  activeCols.forEach(colId => {
+    const col = document.getElementById(colId);
+    if (!col) return;
+    col.querySelectorAll('.p-card').forEach(card => {
+      const m = (card.getAttribute('onclick') || '').match(/openDetail\('(\w+)'\)/);
+      if (!m) return;
+      const proj = projects[m[1]];
+      if (!proj) return;
+      applyUrgencyToCard(card, proj.due);
+      const level = urgencyLevel(daysUntilDue(proj.due));
+      if (level && counts[level] !== undefined) counts[level]++;
+    });
+  });
+
+  // Stat card
+  const dueWeek = Object.values(projects).filter(p =>
+    ['Lead','Estimate','Pending'].includes(p.stage) && (urgencyLevel(daysUntilDue(p.due)) === 'warning' || urgencyLevel(daysUntilDue(p.due)) === 'critical' || urgencyLevel(daysUntilDue(p.due)) === 'overdue')
+  ).length;
+  const statCard = document.getElementById('stat-due-week');
+  const statVal  = document.getElementById('stat-due-val');
+  const statSub  = document.getElementById('stat-due-sub');
+  if (statVal) statVal.textContent = dueWeek;
+  if (statSub) statSub.textContent = dueWeek === 0 ? 'No urgent deadlines' : counts.overdue ? `${counts.overdue} overdue` : 'Bids requiring attention';
+  if (statCard) statCard.classList.toggle('stat-urgent', counts.overdue > 0 || counts.critical > 0);
+
+  // Alert banner
+  const banner = document.getElementById('urg-banner');
+  if (!banner) return;
+  const total = counts.overdue + counts.critical + counts.warning;
+  if (total === 0) { banner.innerHTML = ''; return; }
+  const sev = counts.overdue ? 'overdue' : counts.critical ? 'critical' : 'warning';
+  const items = [];
+  if (counts.overdue)  items.push(`<span class="urg-b-item"><span class="urg-b-dot overdue"></span>${counts.overdue} overdue</span>`);
+  if (counts.critical) items.push(`<span class="urg-b-item"><span class="urg-b-dot critical"></span>${counts.critical} due within 2 days</span>`);
+  if (counts.warning)  items.push(`<span class="urg-b-item"><span class="urg-b-dot warning"></span>${counts.warning} due within 7 days</span>`);
+  banner.innerHTML = `<div class="urg-banner sev-${sev}"><span class="urg-banner-icon">⚠</span><span class="urg-banner-items">${items.join('')}</span></div>`;
+}
+
 function buildCardHTML(p) {
   const sectorLine = (p.sector && p.bidAs && p.type)
     ? `<div class="p-card-sector">${p.sector} · ${p.type} · ${p.bidAs.includes('Sub') ? 'Sub' : p.bidAs.includes('Joint') ? 'JV' : 'GC'}</div>`
     : `<div class="p-card-sector"><span class="incomplete-badge">Incomplete — tap to finish</span></div>`;
   const timeStr = p.dueTime ? ' · ' + p.dueTime : '';
   const valLine = p.val && p.val !== '—' ? `<div class="p-card-value">${p.val}</div>` : '';
+  const urgDays = daysUntilDue(p.due);
+  const urgLvl  = urgencyLevel(urgDays);
+  const urgLine = urgLvl ? `<div class="urg-strip urg-strip-${urgLvl}">${urgencyLabel(urgDays)}</div>` : '';
   const stageBadgeMap = {
     'Lead':           'low',
     'Estimate':       'estimate',
@@ -4850,6 +5372,7 @@ function buildCardHTML(p) {
     ${valLine}
     ${sectorLine}
     <div class="p-card-meta">Due ${p.due}${timeStr}<br>Est: Michael Creel</div>
+    ${urgLine}
     <div class="p-card-footer">${badge}<span class="b2w-pill">B2W ✓</span></div>`;
 }
 
@@ -5137,7 +5660,7 @@ function renderOrgTable(search) {
 // TASKS
 // ══════════════════════════════════════════════════════════════════════════════
 
-const TASK_TEMPLATES = {
+let TASK_TEMPLATES = {
   Solicitation: [
     { title: 'Download bid documents', desc: 'Pull plans, specs, and addenda from the bid portal.', priority: 'high' },
     { title: 'Review project scope & specs', desc: 'Read through divisions and identify key work items.', priority: 'high' },
@@ -5179,6 +5702,8 @@ const TASK_TEMPLATES = {
     { title: 'Debrief with team', desc: 'Review what went well and what to improve for next bid.', priority: 'low' },
   ],
 };
+
+const BUILTIN_TEMPLATE_NAMES = new Set(Object.keys(TASK_TEMPLATES));
 
 // tasks array — each: { id, title, desc, projectId, assignee, status, priority, phase, dueDate }
 const tasksDb = [
@@ -5412,6 +5937,93 @@ function deleteTask() {
 }
 
 // ── Template modal ────────────────────────────────────────────────────────────
+// ── Task template settings ────────────────────────────────────────────────────
+
+let _ttplEditRows = []; // working copy while editing
+
+function renderTaskTemplateSettings() {
+  const listEl = document.getElementById('set-task-tpl-list');
+  if (!listEl) return;
+  const phases = Object.keys(TASK_TEMPLATES);
+  if (!phases.length) {
+    listEl.innerHTML = `<div style="font-size:12.5px;color:var(--text-muted);padding:8px 0 14px">No templates yet.</div>`;
+    return;
+  }
+  listEl.innerHTML = phases.map(name => {
+    const count = (TASK_TEMPLATES[name] || []).length;
+    const safeName = name.replace(/'/g, "\\'");
+    const builtIn = BUILTIN_TEMPLATE_NAMES.has(name);
+    return `<div class="ttpl-list-row">
+      <div>
+        <div class="ttpl-list-name">${name}${builtIn ? '<span class="ttpl-builtin-badge">built-in</span>' : ''}</div>
+        <div class="ttpl-list-count">${count} task${count !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="ttpl-list-actions">
+        <button class="btn btn-secondary" style="font-size:11px;padding:4px 9px" onclick="loadTaskTemplateIntoEditor('${safeName}')">Edit</button>
+        <button class="btn btn-danger"    style="font-size:11px;padding:4px 9px" onclick="deleteTaskTemplate('${safeName}')">Delete</button>
+      </div>
+    </div>`;
+  }).join('') + `<hr style="border:none;border-top:1px solid var(--col-bg);margin:12px 0 14px">`;
+}
+
+function loadTaskTemplateIntoEditor(name) {
+  document.getElementById('set-ttpl-name').value = name;
+  _ttplEditRows = (TASK_TEMPLATES[name] || []).map(t => ({ ...t }));
+  ttplRenderRows();
+}
+
+function ttplRenderRows() {
+  const el = document.getElementById('set-ttpl-rows');
+  if (!el) return;
+  if (!_ttplEditRows.length) {
+    el.innerHTML = `<div class="ttpl-empty">No tasks yet — click "+ Add Task" to start.</div>`;
+    return;
+  }
+  el.innerHTML = _ttplEditRows.map((t, i) =>
+    `<div class="ttpl-row">
+      <input type="text"  value="${(t.title||'').replace(/"/g,'&quot;')}" placeholder="Task title"          oninput="_ttplEditRows[${i}].title=this.value">
+      <input type="text"  value="${(t.desc||'').replace(/"/g,'&quot;')}"  placeholder="Description (optional)" oninput="_ttplEditRows[${i}].desc=this.value">
+      <select onchange="_ttplEditRows[${i}].priority=this.value">
+        <option value="high"   ${t.priority==='high'   ?'selected':''}>High</option>
+        <option value="medium" ${t.priority==='medium' ?'selected':''}>Medium</option>
+        <option value="low"    ${t.priority==='low'    ?'selected':''}>Low</option>
+      </select>
+      <button class="ttpl-remove" onclick="ttplRemoveRow(${i})" title="Remove">✕</button>
+    </div>`
+  ).join('');
+}
+
+function ttplAddRow() {
+  _ttplEditRows.push({ title:'', desc:'', priority:'medium' });
+  ttplRenderRows();
+}
+
+function ttplRemoveRow(i) {
+  _ttplEditRows.splice(i, 1);
+  ttplRenderRows();
+}
+
+function saveTaskTemplate() {
+  const name = document.getElementById('set-ttpl-name')?.value.trim();
+  if (!name) { toast('Enter a template name first'); return; }
+  const tasks = _ttplEditRows.filter(t => t.title.trim());
+  if (!tasks.length) { toast('Add at least one task before saving'); return; }
+  TASK_TEMPLATES[name] = tasks.map(t => ({ title:t.title.trim(), desc:(t.desc||'').trim(), priority:t.priority||'medium' }));
+  renderTaskTemplateSettings();
+  buildTplPhaseBar();
+  toast(`Template "${name}" saved · ${tasks.length} task${tasks.length !== 1 ? 's' : ''}`);
+}
+
+function deleteTaskTemplate(name) {
+  if (!TASK_TEMPLATES[name]) return;
+  delete TASK_TEMPLATES[name];
+  if (tplActivePhase === name) tplActivePhase = Object.keys(TASK_TEMPLATES)[0] || '';
+  renderTaskTemplateSettings();
+  buildTplPhaseBar();
+  renderTplTasks();
+  toast(`Template "${name}" deleted`);
+}
+
 function openTemplateModal() {
   tplChecked.clear();
   tplActivePhase = 'Estimating';
@@ -5942,6 +6554,16 @@ document.addEventListener('click', e => {
     e.target.classList.remove('open');
   }
 });
+
+// Run urgency pass on page load (pipeline is the default active tab)
+refreshUrgencyBadges();
 </script>
+
+<!-- Shared column picker popover — placed at body level so position:fixed works from any tab -->
+<div class="b2w-col-popover" id="b2w-col-popover">
+  <div class="b2w-col-popover-title">Visible Columns</div>
+  <div class="b2w-col-popover-hint">☑ toggle &nbsp;·&nbsp; ⠿ drag to reorder</div>
+  <div id="b2w-col-popover-body"></div>
+</div>
 </body>
 </html>
