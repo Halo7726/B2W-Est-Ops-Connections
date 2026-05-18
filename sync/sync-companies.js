@@ -311,9 +311,7 @@ async function getExistingSpItems(graphToken) {
   };
 
   const map = new Map(); // lowercased Title → SP item id
-  let url =
-    `${SP_ITEMS_URL}?$select=id,fields/Title` +
-    `&$expand=fields($select=Title)`;
+  let url = `${SP_ITEMS_URL}?$select=id&$expand=fields($select=Title)`;
 
   while (url) {
     const res = await fetch(url, { headers });
